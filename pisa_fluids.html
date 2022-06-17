@@ -1,0 +1,638 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+		<link rel="stylesheet" href="plugin/chalkboard/style.css">
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/serif.css">
+		<link rel="stylesheet" href="dist/theme/brown.css">
+
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2 style="font-size: 1.8em;margin-bottom:2cm;">Ergodicity and convergence of some randomly split fluid models</h2>
+					<h3 style="margin-bottom:1cm;"> <font size=15pt>A. Agazzi, J. Mattingly, O. Melikechi</font></h3>
+				<img  style="margin-bottom:1cm;; border: 0; width:200px; box-shadow: none;" src="./figures/phd/duke_logo.png" alt="UNIGE">
+					<h5>LSTM, Universié Paris VII, Paris, 28.10.2021</h5>
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Lorenz 96</h2>
+				 <p align="left" >
+						A toy model for numerical weaher prediction (Lorentz, '96):
+					</p>
+					<p>
+				$$
+					\frac d{dt} x_{k}(t) = x_{k-1}(t) (x_{k+1}(t) - x_{k-2}(t)) \color{red}{- x_{k}(t) + F}\qquad \text{for } k \in \{1,\dots, n\}\label{e:alg}
+				$$
+					</p>
+					<p align="left" >
+						where $x_{-1} = x_{n-1}$, $x_0 = x_n$ and $x_{n+1} = x_{1}$
+					</p>
+
+					<p align="left">
+					These dynamics conserve the energy $\|x\|_2^2$ (verify: $\dot x \cdot x = 0$).
+					</p>
+
+					<p align="left" >
+						This model is known to display bifurcations as $F$ increases.
+					</p>
+
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">2d Navier-Stokes</h2>
+
+					<p align="left" >
+						Navier Stokes equs modeling the evolution of the velocity field $u=u(x,t)$
+					</p>
+					<p>
+				$$
+						\begin{cases}
+						\partial_t u + (u \cdot \nabla) u = \color{red}{\nu \Delta u} - \nabla p \color{red}{+ F}\\
+						\mathrm{div}(u) = \nabla\cdot u = 0
+						\end{cases}
+			$$
+					</p>
+					<p align="left" >
+						for $x \in [0,2\pi]^2$, where $\nu>0$ controls dissipaton and $p$ is the pressure
+					</p>
+
+					<p align="left" >
+						The evolution of the <em>vorticity</em> $q=q(x,t):=\mathrm{curl}(u)$ reads
+					</p>
+					<p>
+						\begin{align}
+						\partial_t q + (\mathcal K q \cdot \nabla) q = \color{red}{\nu \Delta q + f}\qquad \int_{ [0,2\pi]^2} q(x,t) \,dx = 0
+						\end{align}
+					</p>
+					<p align="left" >
+			where $\mathcal K$ is the Biot-savart kernel
+					</p>
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 20pt;">Random forcing</h2>
+
+					<p align="left" >
+						Stochastically forced versions of such systems were extensively studied:
+					</p>
+					<p>
+						$$
+						\frac d{dt} x_{k}(t) = x_{k-1}(t) (x_{k+1}(t) - x_{k-2}(t)) \color{red}{- x_{k}(t) + F} \color{blue}{+ \dot W_k}
+						$$
+					</p>
+					<p>
+				$$
+				\begin{align}
+				\partial_t q(x,t) + (\mathcal K q(x,t) \cdot \nabla) q(x,t) = \color{red}{\nu \Delta q(x,t) + f(x)} \color{blue}{+ \sum_k \sigma_k(x)~ \dot W_k}
+				\end{align}
+		$$
+					</p>
+					<p align="left" style="font-size:0.8em;margin-top:-10px" >
+						[Flandoli<em>et al. </em>95+...], [MattinglyE00], [FlandoliRomito02+08+...], [Romito04+08+...], [MattinglyPardoux05],  [HairerMattingly06+08+...], [DebusscheRomito14], ...
+					</p>
+
+					<p align="left" >
+						The "effect" of noise in these analyses is multifold: it acts both on
+					</p>
+<ul style="font-size:0.9em">
+	<li class="fragment">the conservative dynamics of the system (regularization, smoothing, ...)</li>
+	<li class="fragment">the conservative dynamics of the system (energy exchange)</li>
+</ul>
+
+
+
+				</section>
+
+
+
+
+
+
+				<section>
+					<h2 style="margin-bottom: 30pt;"> Split dynamics</h2>
+					<p align="left" >
+						We can decompose a vector field as
+				$
+				V(x) = \sum_{k=1}^n V_k(x)
+				$
+					</p>
+					<p align="left"  >
+and approximately recover the flow map $\varphi$ solving $\dot \varphi_t(x) = V(\varphi_t(x))$ combining the flow maps $\varphi_.^{(k)}$ of $V_k$:	for small $h$ we expect that		</p>
+<div style="position:absolute; left: 300px; margin-top:-20px" class="fragment fade-out" data-fragment-index="1">
+					<p>
+				$$
+				 \varphi_{ h}(x) \approx \varphi_{h}^{(n)}\circ\dots \circ \varphi_{h}^{(1)}(x)
+				$$
+					</p>
+				</div>
+				<div class="fragment fade-in" data-fragment-index="1">
+									<p>
+								$$
+								 \varphi_{t}(x) \approx \left(\varphi_{h}^{(n)}\circ\dots \circ \varphi_{h}^{(1)}\right)^m(x) \quad \text{for } t=mh
+								$$
+									</p>
+								</div>
+					<div style="border: 3px solid green;padding: 0px 10px 0px 10px;" class="fragment">
+					<p align="left" >
+						We add randomness by randomizing the flow times: for $\tau_i \stackrel{iid}{\sim} \text{Exp}(h)$
+$$
+\Phi_{\tau}(x) := \varphi_{\tau_n}^{(n)}\circ\dots \circ \varphi_{\tau_1}^{(1)} [\color{red}{\circ \varphi_{\tau_0}^{(0)}}](x) \approx \varphi_{nh}(x)
+$$
+where $\tau \in \mathbb R^n$ is a random vector throughout
+</p>
+</div>
+
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Lorenz 96 dynamics</h2>
+					<p align="left" >
+We can split the Lorenz 96 dynamics (for $k \in \{1,\dots, N\}$)
+					</p>
+			<p>
+					$$
+					\begin{align*}
+					\dot x_{k}(t) &= \color{green}{x_{k-1}(t)}~ ( \color{green}{x_{k+1}(t)} - x_{k-2}(t)) \,\color{red}{- x_{k}(t) + F}\\
+					\dot x_{k+1}(t) &=  \color{green}{x_{k}(t)} \quad(x_{k+2}(t)  \color{green}{- x_{k-1}(t)}) \,\color{red}{- x_{k+1}(t) + F}
+					\end{align*}
+				$$
+				</p>
+				<div style="width: 670px;    float:left;" align="left">
+			<p align="left">
+			by defining the vector fields
+		</p>
+    <p>
+						$$
+						\begin{align*}
+						& \color{green}{V_k(x) = x_{k-1} (x_{k+1}e_k - x_{k}e_{k+1})}\qquad \\ &\color{red}{V_0(x) =- x + F}
+						\end{align*}
+					$$
+</p>
+<p align="left">
+These dynamics conserve the energy $\|x\|_2^2$ (verify: $\dot x \cdot x = 0$).
+</p>
+</div>
+<div style="width: 370px;    float:left;" align="right" >
+<img  style="border: 0; width:374px; box-shadow: none;" src="./figures/fluids/sphere.png" alt="UNIGE">
+</div>
+
+
+				</section>
+
+
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Galerkin Navier Stokes dynamics</h2>
+	<p align="left">
+					 For $j \in \mathbb N^2$ the (complex) Fourier modes $q_j = a_j + i b_j \in \mathbb C$ interact in triples $j,k,\ell \in \mathbb N^2$ satisfying $j+k+\ell = 0$ according to
+										</p>
+										<div class="fragment">
+								<p style="font-size: 0.65em;">
+										$$
+										\begin{align*}{\large V_{jk\ell}^{(1-4)}~:}\quad
+											\begin{cases}
+												\dot{a}_j = C_{k\ell}a_ka_\ell \\
+												\dot{a}_k = C_{j\ell}a_ja_\ell \\
+												\dot{a}_\ell = -C_{jk}a_ja_k
+											\end{cases}\quad
+											\begin{cases}
+												\dot{a}_j = C_{k\ell}b_kb_\ell \\
+												\dot{b}_k = C_{j\ell}a_jb_\ell \\
+												\dot{b}_\ell = -C_{jk}a_jb_k
+											\end{cases}\quad
+											\begin{cases}
+												\dot{b}_j = C_{k\ell}a_kb_\ell \\
+												\dot{a}_k = C_{j\ell}b_jb_\ell \\
+												\dot{b}_\ell = -C_{jk}b_ja_k
+											\end{cases}\quad
+											\begin{cases}
+												\dot{b}_j = -C_{k\ell}b_ka_\ell \\
+												\dot{b}_k = -C_{j\ell}b_ja_\ell \\
+												\dot{a}_\ell = C_{jk}b_jb_k.
+											\end{cases}\qquad
+										\end{align*}
+									$$
+								</p>
+									<p align="left">
+									where $ C_{jk} = \frac{\langle j^\perp, k\rangle}{4 \pi} \left(\frac 1 {|k|^2}-\frac 1 {|j|^2}\right)$
+								</p>
+
+
+
+								<p align="left">The dynamics conserve the enstophy
+	  $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2$ $\qquad \qquad \qquad \quad $ and the energy $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+		<p align="left" class="fragment">
+		Galerkin: truncate to modes with $\sup\{ |j_1|,|j_2|\}\leq N$
+	</p>
+</div>
+
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Galerkin Navier Stokes dynamics</h2>
+
+										<p align="left" >
+										Galerkin: truncate to modes with $\sup\{ |j_1|,|j_2|\}\leq N$
+									</p>
+										<img  style="border: 0; width:400px; box-shadow: none;" src="./figures/fluids/gridblack.png" alt="UNIGE">
+			<br>
+			<br>
+
+
+				</section>
+				<section>
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Galerkin Navier Stokes dynamics</h2>
+
+										<p align="left" >
+										Galerkin: truncate to modes with $\sup\{ |j_1|,|j_2|\}\leq N$
+									</p>
+										<img  style="border: 0; width:400px; box-shadow: none;" src="./figures/fluids/gridblack2.png" alt="UNIGE">
+										<p align="left" style="margin-top:-30px">
+														 For $j \in \mathbb N^2$  triples $j,k,\ell \in \mathbb N^2$ interact if $j+k+\ell = 0$
+																			</p>
+
+
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Galerkin Navier Stokes dynamics</h2>
+
+										<p align="left" >
+										Galerkin: truncate to modes with $\sup\{ |j_1|,|j_2|\}\leq N$
+									</p>
+										<img  style="border: 0; width:400px; box-shadow: none;" src="./figures/fluids/gridblack3.png" alt="UNIGE">
+										<p align="left" style="margin-top:-30px">
+														 For $j \in \mathbb N^2$  triples $j,k,\ell \in \mathbb N^2$ interact if $j+k+\ell = 0$
+																			</p>
+
+
+				</section>
+			</section>
+
+
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Galerkin Navier Stokes dynamics</h2>
+	<p align="left">
+					 For each triple $j,k,\ell \in \mathbb N^2$ satisfying $j+k+\ell = 0$ the vector fields
+										</p>
+								<p style="font-size: 0.7em;">
+									$$
+									\begin{align*}
+										\begin{cases}
+											\dot{a}_j = C_{k\ell}a_ka_\ell \\
+											\dot{a}_k = C_{j\ell}a_ja_\ell \\
+											\dot{a}_\ell = -C_{jk}a_ja_k
+										\end{cases}\quad
+										\begin{cases}
+											\dot{a}_j = C_{k\ell}b_kb_\ell \\
+											\dot{b}_k = C_{j\ell}a_jb_\ell \\
+											\dot{b}_\ell = -C_{jk}a_jb_k
+										\end{cases}\quad
+										\begin{cases}
+											\dot{b}_j = C_{k\ell}a_kb_\ell \\
+											\dot{a}_k = C_{j\ell}b_jb_\ell \\
+											\dot{b}_\ell = -C_{jk}b_ja_k
+										\end{cases}\quad
+										\begin{cases}
+											\dot{b}_j = -C_{k\ell}b_ka_\ell \\
+											\dot{b}_k = -C_{j\ell}b_ja_\ell \\
+											\dot{a}_\ell = C_{jk}b_jb_k.
+										\end{cases}\qquad
+									\end{align*}
+								$$
+								</p>
+
+									<!-- <p>
+											$$
+											 \Gamma_0(x,\xi, Q_t ) :=  \omega Q_t \xi  -  x \left( \omega Q_t^2  + \frac {1} 2  (1 + \omega Q_t^2)\right)
+										$$
+									</p> -->
+									<p align="left">conserve the enstophy and the energy
+		  $\mathcal E_0(q) = \|q\|_2^2$, 	  $\mathcal E_1(q) = \|q\|_{-1}^2$</p>
+
+			<img  style="border: 0; width:600px; box-shadow: none;" src="./figures/fluids/ellipse.png" alt="UNIGE">
+
+
+				</section>
+
+
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Convergence results</h2>
+
+					<p align="left">
+									 Let $S_t g(x) := g(\varphi_t(x))$, $\widetilde S_h g(x) := g(\Phi_\tau(x))$ and  $P_h g := \mathbb E[\widetilde S_h g]$  then
+														</p>
+
+<div style="border: 2px solid black;padding: 10px 10px 0px 10px;">
+					<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2021+):</h3>
+					<p align="left">
+						Let $\Phi_\tau$ be the random flow map for either Lorenz 96 or galerkin Navier stokes dynamics. For any $t>0$ there exits $C>0$ such that, for $t=m h$
+						$$\|S_t - P_h^m \|_{2 \to 0}< C h $$
+						the trajectories of $\Phi_\tau^m(x)$ converge almost surely to the ones of $\varphi_t(x)$:
+						$$\mathbb P[\limsup_{h\to 0} \|S_t - \widetilde S_{h}^{m}\|_{2 \to 0}> \epsilon] = 0$$
+					</p>
+				</div>
+
+					<p align="left" style="font-size: 0.6em;">
+					The operator norm is defined as $\|P\|_{2 \to 0}:=\sup_{g~:~\|g\|_2 = 1} \|P g\|_0$
+				</p>
+				<!-- and $\widetilde S_\tau^{M} g(x) := g(\Phi_\tau^{M}(x))$ -->
+				</section>
+
+
+											<section data-transition="fade-in slide-out">
+												<p style="position: relative;">Simulation</p>
+
+															<div style="width: 1070px;" >
+																<video data-autoplay src="./figures/fluids/gaussians_LogEModes.mp4"></video>
+															</div>
+				<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+														</section>
+
+														<section data-transition="fade-in slide-out">
+															<p style="position: relative;">Simulation</p>
+
+																		<div style="width: 1070px;" >
+																			<video data-autoplay src="./figures/fluids/gaussians_LogLogEModes.mp4"></video>
+																		</div>
+				<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+																	</section>
+
+																	<section data-transition="fade-in slide-out">
+																		<p style="position: relative;">Simulation</p>
+
+																					<div style="width: 1070px;" >
+																						<video data-autoplay src="./figures/fluids/vortexPair_LogEModes.mp4"></video>
+																					</div>
+																					<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+																					<!-- = \sum_{j=1}^{(2N+1)^2-1} a_j^2+b_j^2
+													=\sum_{j=1}^{(2N+1)^2-1} \frac{a_j^2+b_j^2}{|j|^2} -->
+																				</section>
+
+																	<section data-transition="fade-in slide-out">
+																		<p style="position: relative;">Simulation</p>
+
+																					<div style="width: 1070px;" >
+																						<video data-autoplay src="./figures/fluids/vortexPair_LogLogEModes.mp4"></video>
+																					</div>
+													<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+																				</section>
+
+
+
+								<section>
+									<h2 style="margin-bottom: 30pt;">Convergence: Sketch of proof</h2>
+					<p align="left">
+Let $\tau_i \sim \mathrm{Exp}(1)$, and recall that 					$\widetilde{S}_{h\tau}g(x)		= g(\Phi_{h\tau}(x))	$, then we have						</p>
+												<p style="font-size:0.8em;">
+														$$
+														\begin{align*}
+																\partial_h\widetilde{S}_{h\tau} &=\sum_{k=1}^n \tau_k e^{h\tau_1}\cdots e^{h\tau_{k-1}}V_k e^{h\tau_k}\cdots e^{h\tau_n}\\
+																& = \sum_{k=1}^n \tau_kV_k\widetilde{S}_{h\tau}+\sum_{k=1}^n \tau_k[\widetilde{S}^{(1,k-1)}_{h\tau}, V_k]\widetilde{S}^{(k,n)}_{h\tau}= V\widetilde{S}_{h\tau}+(V_\tau-V)\widetilde{S}_{h\tau}+E_{h\tau}
+														\end{align*}													$$
+													</p>
+													<p align="left">
+by variation of constants then we have
+</p>
+<p style="font-size:0.8em;">
+															$$
+															\begin{align}
+																\widetilde{S}_{h\tau}-S_h = \int_0^h S_{h-r}(V_\tau-V)\widetilde{S}_{r\tau} dr+\int_0^hS_{h-r}E_{r\tau} dr.
+															\end{align}														$$
+													</p>
+													<div class="fragment">
+													<p align="left">
+													both remainders have order $\mathcal O(h^2)$, so $\|P_{h}-S_{h}\|_{2\to 0} \sim \mathcal O(h^2)$
+												</p>
+											</div>
+								</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Ergodicity: Lorenz 96 </h2>
+
+					<p align="left">
+Let $\mathcal H = \{x \in \mathcal R^{n}~:~\sum_{k=1}^n (x_{k-1}^2+x_{k+1}^2)x_k^2\neq 0\}$					</p>
+
+<div style="border: 2px solid black;padding: 10px 10px 0px 10px;margin-bottom:10px;">
+
+					<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2021+):</h3>
+					<p align="left">
+						For the <em>conservative</em> Lorenz 96 randomly split dynamics ($V_1, \dots, V_n$), Lebesgue measure is the unique invariant measure for $P_h$ on $\mathcal H\cap \mathcal S^{n-1}$.
+					</p>
+</div>
+					<div style="border: 2px solid black;padding: 10px 10px 0px 10px;">
+
+					<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2021+):</h3>
+					<p align="left">
+						For the <em>forced/dissipative</em>  randomly split Lorenz 96  ($\color{red}{V_0},V_1, \dots, V_n$), let the fixed point of $V_0$ satisfy $x^*=F/\nu\not \in \mathcal H$. Then $P_h$ has a unique invariant measure $\mu$ to which the system converges exponentially fast in a weighted total varation norm.
+					</p>
+				</div>
+				</section>
+
+<section>
+	<section>
+				<section>
+					<h2 style="margin-bottom: 30pt;">Ergodicity: Galerkin Navier Stokes</h2>
+
+					<p align="left">
+Let $\mathcal H = \{x \in \mathbb R^{n}~:~\exists \tau \in \mathbb R_+^{n},~\mathrm{supp}(\Phi_\tau(x))=\{1,\dots, n\}\}$					</p>
+
+<div style="border: 2px solid black;padding: 10px 10px 0px 10px;margin-bottom:10px;">
+
+					<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2021+):</h3>
+					<p align="left">
+						For the Euler randomly split dynamics ($V_1, \dots, V_n$), there exists at most one invariant measure for $P_h$ on $\mathcal H \cap \{q~:~\mathcal E_0(q) = \mathcal E_0, \mathcal E_1(q) = \mathcal E_1\}$.
+					</p>
+</div>
+
+					<div style="border: 2px solid black;padding: 10px 10px 0px 10px;">
+
+					<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2021+):</h3>
+					<p align="left">
+						For the randomly split Galerkin Navier Stokes  ($\color{red}{V_0},V_1, \dots, V_n$), let the fixed point of $\color{red}{V_0}$ satisfy a weak bracket (or Hörmander) conditon. Then $P_h$ has a unique invariant measure $\mu$ to which the system converges exponentially fast in a weighted total varation norm.
+					</p>
+				</div>
+				</section>
+
+			</section>
+
+
+			<section>
+				<h2 style="margin-bottom: 30pt;">Ergodicity: Galerkin Navier Stokes</h2>
+
+				<p align="left">
+Let $\mathcal H = \{x \in \mathbb R^{n}~:~\exists \tau \in \mathbb R_+^{n},~\mathrm{supp}(\Phi_\tau(x))=\{1,\dots, n\}\}$					</p>
+<p align="left" style="font-size:0.9em;">
+	A <em>weak bracket condtion </em> holds at $x$ if the set of vectors
+	$$	\mathcal{V}_{m+1} = \left\{[V_k,W] : W\in\mathcal{V}_m, 0\leq k\leq n\right\}\cup\mathcal{V}_m.
+$$
+spans the tangent space of the model at $x$ for $m$ large enough.
+</p>
+<div style="border: 2px solid black;padding: 10px 10px 0px 10px;margin-bottom:10px;">
+
+				<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2021+):</h3>
+				<p align="left">
+					For the randomly split Galerkin Navier Stokes  ($\color{red}{V_0},V_1, \dots, V_n$), let the fixed point of $\color{red}{V_0}$ satisfy a weak bracket (or Hörmander) conditon. Then $P_h$ has a unique invariant measure $\mu$ to which the system converges exponentially fast in a weighted total varation norm.
+				</p>
+			</div>
+
+
+			</section>
+		</section>
+
+
+
+								<section>
+									<h2 style="margin-bottom: 30pt;">Ergodicity of gNSE: Sketch of proof</h2>
+					<ul align="left" style="font-size:0.9em;">
+						<li>
+									 In the presence of the forcing term $V_0(q) = - \nu \Lambda q + F$ there exists $r>0$ with $\mathcal B_r(0)$  being forward invariant wrt the split dynamics. This implies tighness and existence follows by Krylov-Bogolubov.
+								 </li>
+														<li align="left" style="margin-top:20px;">
+														Further, a Doeblin minorization condition holds: letting $P_h$ be the semigroup of a cycle, by the weak bracket condition there exists $m>0$ a set $B$ and a constant $c>0$ suc that for any $q_0 \in \mathcal B_r(0)$
+
+														$$
+P_h^{m+1}(q_0, B) > c_h \lambda (\cdot \cap B)										$$
+
+Uniqueness and exponential convergence follow from the above by a standard coupling argument.												</li>
+</ul>
+
+								</section>
+
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Lyapunov exponents</h2>
+	<p align="left">
+					 Let $P_t$ have a unique inv. meas. $\mu$, then (by the multiplicative ergodic theorem) there exists a deterministic $\lambda_1$ such that $\mathbb P\times \mu$-a.e. in $(\omega, x)$,
+
+										$$
+										 \lambda_1 := \lim_{t \to \infty} \frac 1 t \log |D \Phi_t(x)|
+									$$
+
+This describes asymptotic rate of separation of trajectores, and $\lambda_1>0$ hints for chaos</p>
+
+
+
+										<div class="fragment" style="border: 2px solid black;padding: 10px 10px 0px 10px;margin-bottom:10px;">
+
+															<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2021++):</h3>
+															<p align="left">
+																Let $\Phi_\tau$ be the random flow map for the conservatve Lorenz 96 dynamics. The Lyapunov exponent of $\Phi_\tau$ is positive: $\lambda_1>0$.</p>
+							</div>
+				</section>
+
+
+
+
+
+
+
+
+																<section data-transition="fade-in slide-out">
+																	<h2 style="position: relative">Thank you!</h2>
+
+																				<div style="width: 1070px;" >
+																					<video data-autoplay src="./figures/fluids/vortexPairLong_LogLogEModes.mp4"></video>
+																				</div>
+	<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+																			</section>
+
+																			<!-- <section data-transition="fade-in slide-out">
+																				<p style="position: relative;">Simulation</p>
+
+																							<div style="width: 1070px;" >
+																								<video data-autoplay src="./figures/fluids/gaussians_LogLogEModes.mp4"></video>
+																							</div>
+	<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+																						</section> -->
+<!--
+		<section data-background="./figures/pca/b038w092.png" data-background-size="47%" data-transition="fade-in fade-out">
+							<p style="position: absolute; top: -300px; left: 350px;">Discrete dynamics ($\beta < \tau^2/2$)</p>
+							<div>&nbsp;</div>
+						</section>
+ -->
+
+
+<!--
+				<section >
+									<h2 style="position: relative">Thank you!</h2>
+									<div>&nbsp;</div>
+								</section> -->
+
+
+			</div>
+		</div>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+	<script src="plugin/math/math.js"></script>
+
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+
+				width: 1060,
+				height: 700,
+
+				history: true,
+				// transition: 'none',
+				backgroundTransition: 'none',
+				// Enables touch navigation on devices with touch input
+  		  touch: true,
+				//
+				// // Hide cursor if inactive
+  		  // hideInactiveCursor: true,
+				//
+  		  // // Time before the cursor is hidden (in ms)
+        // hideCursorTime: 5000
+
+				hash: true,
+				dependencies: [
+						// ...
+						{ src: 'plugin/handwriting/handwriting.js' },
+
+						// ...
+
+
+												{
+														src: 'plugin/mouse-pointer/mouse-pointer.js',
+														async: false
+													},
+					],
+
+
+									math: {
+										// mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+										config: 'TeX-AMS_HTML-full',
+									},
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealChalkboard ,RevealMath]
+			});
+		</script>
+	</body>
+</html>

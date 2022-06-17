@@ -1,0 +1,582 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+		<link rel="stylesheet" href="plugin/chalkboard/style.css">
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/serif.css">
+
+		<!-- <link rel="stylesheet" href="plugin/highlight/monokai.css"> -->
+
+
+
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+
+
+		<link rel="stylesheet" href="dist/theme/brown.css">
+
+<!-- Theme used for syntax highlighted code -->
+</head>
+
+<body {font-size: 0.9em;}>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h2 style="font-size: 1.8em;margin-bottom:2cm;">Solving the chemical recurrence conjecture in 2d</h2>
+				<h3 style="margin-bottom:0.5cm;">
+					<font size=15pt>Andrea Agazzi</font>
+				</h3>
+				<img style="margin-bottom:1cm;; border: 0; width:300px; box-shadow: none;" src="./figures/crc/logo_unipi.png" alt="UNIGE">
+				<h5>Probability Seminar, Indiana University, Bloomington, 04.25.2022</h5>
+			</section>
+
+
+			<section>
+				<h2>Chemical Reaction Networks</h2>
+				<p align="left">
+					Consider the reactions <big> \(\emptyset \overset{r_1}{\rightharpoonup} A + B \overset{r_2}{\rightharpoonup} 2B \overset{r_3}{\rightharpoonup} A\)</big>. We see sets of
+				</p>
+				<div>
+					<ul style="font-size:0.9em;">
+						<li class="fragment" align="left" style="font-size:0.9em;">  Molecules \( \ \mathcal S = \{A,B\}\qquad\qquad\)
+
+						<li class="fragment" align="left"> Reactions \( \ \mathcal R = \{r_1,r_2,r_3\}\)
+
+						<li class="fragment" align="left"> In/out combinations \( \mathcal C = \{(0,0),(1,1),(0,2),(1,0)\}\qquad\qquad\)
+					</ul>
+				</div>
+
+				<p align="left" class="fragment">
+					A chemical reaction network \((\mathcal S, \mathcal C, \mathcal R)\) is defined by the sets
+				</p>
+
+				<div class="fragment">
+					<ul style="font-size:0.9em;" align="left">
+						<li>\( \ \mathcal S := \{s_1, s_2,\dots, s_d\}\) of chemical species,
+
+						<li>\( \ \mathcal R := \{r_1, r_2,\dots, r_m\}\) of chemical reactions,
+
+						<li>\(\ \mathcal C := \bigcup_{r \in \mathcal R} \{c_{\rm in}^r, c_{\rm out}^r\}\) of reaction complexes.$\qquad \qquad \qquad \quad$
+					</ul>
+				</div>
+			</section>
+
+
+			<section>
+				<h2>
+					Structural conditions
+				</h2>
+
+				<div style="float:left; width:650px;">
+
+					<p align="left">
+						Can we find a convenient representation of the network allowing us to infer some of its dynamical properties "at first sight"?
+					</p>
+					<p align="left" class="fragment" data-fragment-index="1">
+						Consider for example the system <br> \(\emptyset\quad \,\,\rightharpoonup A+B \rightharpoonup \,\,\,2B \,\,\,\rightharpoonup A~.\)<br>
+						$(0,0)\rightharpoonup (1,1)\,\rightharpoonup\,(0,2) \rightharpoonup (1,0)$
+					</p>
+					<p align="left" class="fragment" data-fragment-index="1">
+						<font color="red">Is this network asymptotically stable?</font>
+					</p>
+				</div>
+				<div style="width: 500px; float:right;" class="fragment" data-fragment-index="2">
+					<img src="./figures/phd/figure3e.png" vertical-align="top" style="border: 0; width:450px; box-shadow: none; " />
+				</div>
+			</section>
+
+
+
+			<section>
+				<h2 style="margin-bottom: 30px;">Microscopic Markov model</h2>
+				<p align="left" style="font-size:0.9em">
+					With \(N_t \in \mathbb N_0^d\) counting the molecules of each species in a reactor we model the dynamics of the system through a pure jump Markov
+					model.
+				</p>
+				<div class="fragment" data-fragment-index="1" style="float:left; width: 1200px;">
+					<p align="left" class="fragment" data-fragment-index="1" style="font-size:0.9em">Each reaction \(r\) is a jump by \(c^r := c_{\rm out}^r - c_{\rm in}^r\) and occurs at a rate \( \Lambda_{r}\)
+						<font class="fragment" data-fragment-index="1"> where </font>
+					</p>
+					<p>
+						$$\Lambda_r(n):= k_r \prod_{i = 1}^d\binom{n_i}{(c_{\rm in}^r)_i}(c_{\rm in}^r)_i! = k_r \prod_{i = 1}^d n_i^{(c_{\rm in}^r)_i}(1 + o_n(1))$$</p>
+					</p>
+
+				</div>
+				<div class="fragment" data-fragment-index="2" style="width: 1200px; float:left;">
+					<p align="left" style="font-size:0.85em; color:blue;">Ex: $A +B \to 2B$ is a jump of $(0,2)- (1,1) = (-1,1)$ at rate $
+						\Lambda(x) = k \cdot n_A \cdot n_B
+						$</p>
+				</div>
+				<div class="fragment" data-fragment-index="2" style="width: 1200px; float:left;">
+					<p align="left">Generator of $N_t$: $\mathcal L f(x) := \sum_{r \in \mathcal R} \Lambda_{r} (x) \left(f(x + c^r) -f(x)\right)$</p>
+				</div>
+			</section>
+
+
+
+
+
+
+
+
+
+
+			<section>
+				<h2>Weakly reversible CRNs</h2>
+				<div style="padding: 10px 10px 0px 10px;">
+					<p align="left"><b>Definition:</b>
+						A chemical reaction network $(\mathcal S, \mathcal C, \mathcal R)$ is calles <em>weakly reversible</em> if, when interpreted as a reaction graph (complexes are nodes and reactions are directed edges), all its connected components are strongly connected.
+					</p>
+				</div>
+				<div style="width: 500px; float:left;" class="fragment" data-fragment-index="2">
+					<img src="./figures/phd/w6.png" vertical-align="top" style="border: 0; height:300px; box-shadow: none; " />
+				</div>
+				<div style="width: 500px; float:left;" class="fragment" data-fragment-index="3">
+					<img src="./figures/phd/w7.png" vertical-align="top" style="border: 0; height:300px; box-shadow: none; " />
+				</div>
+			</section>
+
+
+			<section>
+				<h2>The main result</h2>
+				<div style="border: 2px solid black;padding: 10px 10px 0px 10px;">
+					<p align="left"><b>Theorem (A., Anderson, Cappelletti, Mattingly, 2022+):</b></p>
+					<p align="left">
+						Let $(\mathcal S, \mathcal C, \mathcal R)$ be a weakly reversible chemical reaction network, then $N_t$ is positive recurrent for any choice of rate constants $\{k_r\}_{r \in \mathcal R}$.
+
+					</p>
+				</div>
+			</section>
+
+			<section>
+				<h2>Foster-Lyapunov estimates</h2>
+
+					<!-- <div>
+						<p align="left">Generator for $v = 1$:  $\quad \mathcal L_1 f(x) := \sum_{r \in \mathcal R} \Lambda_r^{(1)} (x) \left(f(x + c^r) -f(x)\right) $</p>
+					</div> -->
+					<div>
+					<p align="left">
+						<em>Sufficient condition for recurrence</em>: there exists Lyapunov function $V(x) > 1$ and a compact $\mathcal K \subseteq \mathbb N_0^d$ with
+					</p><p>
+						$$\mathcal L V(x) < -1 \quad \text{for all } x \not \in \mathcal K$$
+					</p>
+					<p align="left">
+						We proceed to establish an analogous estimate a) <em>in the bulk</em> and b)  <em>on the boundary</em> of the state space separately.
+					</p>
+				</div>
+
+</section>
+
+<section>
+	<h2>The bulk, aka deterministic regime</h2>
+
+		<!-- <div>
+			<p align="left">Generator for $v = 1$:  $\quad \mathcal L_1 f(x) := \sum_{r \in \mathcal R} \Lambda_r^{(1)} (x) \left(f(x + c^r) -f(x)\right) $</p>
+		</div> -->
+		<div>
+		<p align="left">
+			In the bulk, i.e. when $n_A, n_B \gg 1$, we approximate to leading order
+		</p>
+			<p>
+								$$\Lambda_r(x):= k_r \prod_{i = 1}^d\binom{x_i}{(c_{\rm in}^r)_i}(c_{\rm in}^r)_i! \approx k_r \prod_{i = 1}^d x_i^{(c_{\rm in}^r)_i}=: \lambda_r(x)$$</p>
+							</p>
+		<p align="left">
+			and approximating the difference term by a derivative we obtain
+		</p>
+		<p>
+							$$\mathcal L V(x) = \sum_{r \in \mathcal R} \Lambda_{r} (x) \left(V(x + c^r) -V(x)\right) \approx \sum_{r \in \mathcal R} \lambda_r(x) c^r \cdot \nabla V(x)$$</p>
+						</p>
+	</div>
+
+</section>
+
+
+
+			<section>
+				<h2>A useful parametrization of $\mathbb R_+^d$</h2>
+				<p align="left">Consider the change of coordinates $ x_i = \vartheta^{w_i}\;\text{with} \; (w,\vartheta) \in S^{d-1} \times \mathbb R_{\geq 1}$
+					<br>$\quad$<br>$\quad$<br>
+				</p>
+				<div style="width: 1000px; position:absolute;bottom:250px;right:100px;">
+					<img src="./figures/phd/complex.png" align="left" vertical-align="bottom" style="border: 0; width:280px; box-shadow: none; ">
+					<img src="./figures/phd/concentration.png" align="right" vertical-align="bottom" style="border: 0; width:280px; box-shadow: none; ">
+				</div>
+				<p><br>$\quad$<br>$ \to$</p>
+				<div class="fragment" data-fragment-index="1" vertical-align="bottom">
+
+				</div>
+				<p><br><br></p>
+				<p align="left" class="fragment" data-fragment-index="1">$\text{Then } \lambda_r(\vartheta^w) =k_r \prod_{i = 1}^d (\vartheta^{w_i})^{(c_{\rm in}^r)_i} = k_r \vartheta^{\sum_{i = 1}^d w_i (c_{\rm in}^r)_i } = k_r \vartheta^{\langle w, c_{\rm
+					in}^r\rangle}$</p>
+				<p align="left" class="fragment" data-fragment-index="2">$$\Rightarrow \Big[\frac{\rm d}{{\rm d} t} x\Big]_{x_i = \vartheta^{w_i}} = \sum_{r \in \mathcal R} \lambda_r(\vartheta^w) c^r = \sum_{r \in \mathcal R} k_r \vartheta^{\langle w, c_{\rm
+					in}^r\rangle} c^r$$</p>
+			</section>
+
+			<section>
+												<section data-background="./figures/phd/change_of_coords2.png" data-background-size="47%" data-transition="fade-in fade-out">
+													<p style="position: absolute; top: -300px; left: 350px;">\(\emptyset \rightharpoonup A + B \rightharpoonup 2B \rightharpoonup A\)</p>
+													<div>&nbsp;</div>
+												</section>
+
+												<section data-background="./figures/phd/change_of_coords9c.png" data-background-size="47%" data-transition="fade-in fade-out">
+													<p style="position: absolute; top: -300px; left: 350px;">\(\emptyset \rightharpoonup A + B \rightharpoonup 2B \rightharpoonup A\)</p>
+													<p style="background-color:#F0F1EB; position: absolute; top: -130px; left: 00px;">$$\dot x = \sum_{r \in \mathcal R} k_r \vartheta^{\langle w, c_{\rm in}^r\rangle} c^r$$</p>
+													<div>&nbsp;</div>
+												</section>
+
+												<section data-background="./figures/phd/change_of_coords9b.png" data-background-size="47%" data-transition="fade-in fade-out">
+													<p style="position: absolute; top: -300px; left: 350px;">\(\emptyset \rightharpoonup A + B \rightharpoonup 2B \rightharpoonup A\)</p>
+													<p style="background-color:#F0F1EB; position: absolute; top: -130px; left: 00px;">$$\dot x = \sum_{r \in \mathcal R} k_r \vartheta^{\langle w, c_{\rm in}^r\rangle} c^r$$</p>
+													<div>&nbsp;</div>
+												</section>
+
+												<section data-background="./figures/phd/change_of_coords4.png" data-background-size="47%" data-transition="fade-in fade-out">
+													<p style="position: absolute; top: -300px; left: 350px;">
+														\(\emptyset \rightharpoonup A + B \rightharpoonup 2B \rightharpoonup A\)
+													</p>
+													<div>&nbsp;</div>
+												</section>
+			</section>
+
+
+
+			<section>
+				<h2 style="margin-bottom:30px;">
+					Chemical Lyapunov function
+				</h2>
+				<p align="left">
+					We use the chemical Lyapunov function
+				</p>
+				<p align="left">
+					$$U(x) := \sum_{i=1}^d x_i \log x_i - x_i + 1 \quad \Rightarrow \quad \nabla_i U(\vartheta^{w_i}) = w_i \log(\vartheta)$$
+				</p>
+				<div class="fragment" data-fragment-index="0">
+					<p align="left">
+						Writing \(x_i = \vartheta^{w_i}\) with \( (w, \vartheta) \in S^{d-1}\times \mathbb R_{\ge1}\), we wish
+					</p>
+					<p align="left">
+						$$\frac{{\rm d}}{{\rm d}t} U(x(t)) = \langle \nabla U (x),\frac{{\rm d}}{{\rm d}t} x(t) \rangle = \log \vartheta \sum_{r \in \mathcal R} k_r \langle w, c^{r} \rangle \vartheta^{\langle w, c_{\rm in}^r\rangle} \overset{!}{
+							<} 0$$
+						</p>
+								<p align="left" class="fragment" data-fragment-index="1">
+									This holds if for \(\vartheta\) large enough and any \(w \in S^{d-1}\), the reaction dominating the sum (maximizing \(\langle w, c_{\rm in}^r\rangle\)) contributes negatively to it \((\langle w, c^{r}\rangle
+									< 0)\).
+								</p>
+					</div>
+					<!-- <p class="fragment" data-fragment-index="0" style="background-color:#F0F1EB; position: absolute; top: 100px; left: 650px;">$\dot x = \sum_{r \in \mathcal R} k_r \vartheta^{\langle w, c_{\rm in}^r\rangle} c^r$</p> -->
+				</section>
+
+				<section>
+					<h2>
+							Strongly endotactic networks
+					</h2>
+					<div style="width: 610px; float:left;">
+						<p align="left">
+							The network \((\mathcal S, \mathcal C, \mathcal R)\) is called <em>strongly endotactic</em> if, for all
+							<font class="fragment highlight-red" data-fragment-index="1">\(w \in S^{1}\)</font>, the set of dominant reactions \(\mathcal R_w = \arg\max_{r \in \mathcal R} { \langle w, c_{\rm in}^r\rangle }\)<br> contains only reactions with \(\langle w , c^{r}\rangle \leq 0~,\)<br>
+							and at least one has \( \langle w , c^{r}\rangle
+							< 0~.\) </p>
+								<p align="left">
+									<font >This can be checked algorithmically.</font>
+								</p>
+					</div>
+					<div class="fragment" data-fragment-index="1" style="width: 440px; float:right;">
+						<img src="./figures/phd/cmp_ex_sprd_9b.png" align="right" vertical-align="bottom" style="border: 0; width:440px; box-shadow: none;" />
+					</div>
+					<p align="left">$[$Gopalkrishnan, Miller, Shiu, '16$]$</p>
+				<!--<p align="left" class="fragment" data-fragment-index="2">This family can be further generalized defining for any $a \in \mathbb R^d, \|a\|_1=d$: $$U_a(x) = 1+ \sum_{i+1}^d a_i x_i (\log(x_i)-1)$$</p>-->
+				</section>
+
+
+				<section>
+					<h2>
+						Averaging in the bulk
+					</h2>
+
+					<div style="float:left; width:650px;">
+
+						<p align="left">
+							It can be shown that weakly reversible networks are strongly endotactic for <em>almost</em> all $w \in S^1$.
+							For some $w \in \mathcal W$ the dominant reactions may have \( \langle w , c^{r}\rangle
+							= 0~.\)
+						</p>
+						<p align="left" class="fragment" data-fragment-index="1">
+							We need to average out these reactions, in order to "see" the contribution of the lower order ones (which plays in our favor).
+						</p>
+					</div>
+					<div style="width: 500px; float:right;" class="fragment" data-fragment-index="2">
+						<img src="./figures/phd/w9.png" vertical-align="top" style="border: 0; width:450px; box-shadow: none; " />
+					</div>
+				</section>
+
+				<section>
+					<h2>
+						Averaging in the bulk
+					</h2>
+
+					<div style="float:left; width:550px;">
+
+						<p align="left">
+							For any problematic $w^* \in S^1$ we locally choose $V(x)$ with  $$c^r \cdot \nabla V(x) = 0$$
+							for $r \in \mathcal R_{w^*}$
+						</p>
+						<p align="left" class="fragment" data-fragment-index="1">
+							We smoothly "patch" this locally defined Lyapunov function with $U(x)$ on the rest of the domain.
+						</p>
+					</div>
+					<div style="width: 600px; float:right;" class="fragment" data-fragment-index="2">
+						<img src="./figures/crc/smoothing.png" vertical-align="top" style="border: 0; width:550px; box-shadow: none; " />
+					</div>
+				</section>
+
+
+
+
+				<section>
+					<h2>Transition to boundary behavior</h2>
+
+					<p align="left">Recall that for $\emptyset \to A+B\,,  \qquad 5A + 2 B \to 3B \to 2B\,, \qquad   2A + B \to 2A $
+					</p>
+					<p>$$\Lambda_{\emptyset \to A+B}(x) \approx k \quad \Lambda_{2A+B\to 2A  }(x) \approx k' x_A^2{x_B}\quad \Lambda_{5A+2B\to 3B  }(x) \approx k'' x_A^5 \binom{x_B}{2}$$</p>
+
+						<!-- <p align="left">For large values of $x_A$, the dominating reaction is $5A+2B \to 3B$, but this can only happen when $x_B \geq 2$ (as otherwise $\Lambda_{5A+2B\to 3B  }^{(1)} = 0$)</p> -->
+
+						<div style="width:1100px;height:400px;margin:40px 0px 0px 00px;">
+
+						<img class="fragment " style="border: 0; width:700px; box-shadow: none; position:absolute;top:350px;left:0px;  margin:0px 30px 30px 00px;padding=0px" src="./figures/mf/boundarydown3.png" align="left" >
+						<img class="fragment " style="border: 0; width:700px; box-shadow: none; position:absolute;top:350px;left:0px; margin:0px 30px 30px 00px;padding=0px" src="./figures/mf/boundaryup3a.png" align="left" >
+
+						<div style="float:left; width:470px;position:absolute;top:350px;left:720px; ">
+						<table style=" font-size: 0.8em;">
+							<tr>
+								<td align="left">
+						$\bullet$ if $x_B = 0$ only $\emptyset \to A+B$ fires<br>
+						$\bullet$  if $x_B = 1$, $\emptyset \to A+B$ and $2A+B \to 2A$ compete, but $$p_{\emptyset \to A+B} = \frac{1}{x_A^2+1}$$
+								</td>
+							</tr>
+						</table>
+						</div >
+						</section>
+
+						<section>
+							<h2>Transition to boundary behavior</h2>
+
+							<p align="left">Recall that for $\emptyset \to A+B\,,  \qquad 5A + 2 B \to 3B \to 2B\,, \qquad   2A + B \to 2A $
+							</p>
+							<p>$$\Lambda_{\emptyset \to A+B}(x) \approx k \quad \Lambda_{2A+B\to 2A  }(x) \approx k' x_A^2{x_B}\quad \Lambda_{5A+2B\to 3B  }(x) \approx k'' x_A^5 \binom{x_B}{2}$$</p>
+
+								<!-- <p align="left">For large values of $x_A$, the dominating reaction is $5A+2B \to 3B$, but this can only happen when $x_B \geq 2$ (as otherwise $\Lambda_{5A+2B\to 3B  }^{(1)} = 0$)</p> -->
+
+								<div style="width:1100px;height:400px;margin:40px 0px 0px 00px;">
+
+							<img  style="border: 0; width:700px; box-shadow: none; position:absolute;top:350px;left:0px; margin:0px 30px 30px 00px;padding=0px" src="./figures/mf/boundaryup3b.png" align="left" >
+
+								<div style="float:left; width:470px;position:absolute;top:350px;left:720px; ">
+								<table style=" font-size: 0.8em;">
+									<tr>
+										<td align="left">
+											$\bullet$ if $x_B = 0$ only $\emptyset \to A+B$ fires<br>
+											$\bullet$  if $x_B = 1$, $\emptyset \to A+B$ and $2A+B \to 2A$ compete, but $$p_{\emptyset \to A+B} = \frac{1}{x_A^2+1}$$
+										</td>
+									</tr>
+								</table>
+								</div >
+								</section>
+
+
+						<section>
+							<h2>Boundary behavior: an example</h2>
+
+
+												<div style="float:left; width:550px;">
+
+													<p align="left">
+														While the above, divergent behavior does not occur in weakly reversible networks, also in this case we observe boundary layer effects.
+													</p>
+													<p align="left" class="fragment" data-fragment-index="1">
+														We smoothly "patch" this locally defined Lyapunov function with $U(x)$ on the rest of the domain.
+													</p>
+												</div>
+												<div style="width: 600px; float:right;" class="fragment" data-fragment-index="2">
+													<img src="./figures/phd/w5.png" vertical-align="top" style="border: 0; width:550px; box-shadow: none; " />
+												</div>
+						</section>
+
+						<section>
+							<h2>Intuition: WF fast-slow decomposition</h2>
+							<p align="left">
+For large $n_A$ we decompose the dynamical landscape on the boundary into potential <em>wells</em> or <em>fibers</em>.</p>
+							<div style="float:left; width:490px;">
+
+								<img src="./figures/phd/w5.png" vertical-align="top" style="border: 0; width:470px; box-shadow: none; " />$\qquad \qquad$
+
+							</div>
+							<div style="width: 550px; float:right;" class="fragment" data-fragment-index="2">
+								<img src="./figures/crc/WF2.png" vertical-align="top" style="border: 0; width:530px; box-shadow: none; " />
+							</div>
+
+
+						</section>
+
+						<section>
+							<h2>Intuition: WF fast-slow decomposition</h2>
+							<p align="left">
+For large $n_A$ we decompose the dynamical landscape on the boundary into potential <em>wells</em> or <em>fibers</em>.</p>
+							<div style="float:left; width:490px;">
+
+								<img src="./figures/phd/wr11.png" vertical-align="top" style="border: 0; width:430px; box-shadow: none; " />$\qquad \qquad$
+
+							</div>
+							<div style="width: 550px; float:right;" class="fragment" data-fragment-index="2">
+								<img src="./figures/crc/WF3.png" vertical-align="top" style="border: 0; width:570px; box-shadow: none; " />
+							</div>
+
+
+						</section>
+
+
+						<section>
+							<h2>Adapting the proof</h2>
+							<!-- <p align="left">
+		To capture dissipation in the framework introduced above, we partition the bulk into a hierarchy of <em>fibers</em>.
+		</p> -->
+		<p align="left"> We sequentially coarse-grain the fibers and define our Lyapunov function as <em>constant</em> on such coarse-grained sets, relaxing our dissipation condition to
+		$$\mathbb E_{n_0} \int_{0}^{\Delta_i}  \mathcal L V(N_s) ds \le -C\cdot \mathbb E_{n_0}[ \Delta_i]\qquad \text{for } N_t \not \in \mathcal K$$
+	</p>
+	<p align="left">
+where $\Delta_i$ is the time to exit fiber $i$.</p>
+
+						</section>
+
+
+						<section>
+							<h2>Final step: contradiction</h2>
+<p align="left">
+To prove the desired estimate, upon adapting the growth of the function $V(x)$ in $x$ it is sufficient to show that the process has probability $1$, to leading order, to exit a fiber to the left.
+</p>
+<div class="fragment" style="border: 2px solid black;padding: 10px 10px 0px 10px;">
+	<p align="left"><b>Theorem (Anderson, Craciun, Kurtz, 2010):</b>
+		Let $(\mathcal S, \mathcal C, \mathcal R)$ be a weakly reversible chemical reaction network, there esist reaction rates $\{k_r\}$ such that the invariant distribution of $N_t$ is Poisson.
+	</p>
+</div>
+<div class="fragment">
+<p align="left">
+The proof is concluded by showing that
+<ul style="font-size:0.9em">
+	<li>The choice of $\{k_r\}$ does not affect the leading order exit probabilities from fibers.
+<li> The superexponential decay of poisson tails is in contradiction with a comparably likely exit probability from fibers.
+</ul>
+	</p>
+	</div>
+						</section>
+
+
+
+
+
+
+
+
+
+
+
+
+<section>
+	<h2>Conclusions</h2>
+	<ul style="float:left;padding:0;margin:10pt 10pt 30pt 10pt;">
+
+		<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+			First step in proving the Chemical Recurrence Conjecture.
+		</li>
+	</ul>
+	<p align="left" style="font-size:1em; width:1000px;">
+		Open questions for high-dimensional proof
+	</p>
+	<ul style="float:left;padding:0;margin:10pt;">
+		<li style="float:left;padding:5px;margin:0;font-size:0.9em;width:1000px">
+			Surgery of space in higher dimensions</li>
+
+		<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+			Patching of Lyapunov function on the boundary</li>
+
+		<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+			Stability of endotactic networks in high dimensions</li>
+	</ul><br>$\,$<br>
+
+	<h2 class="fragment" style="padding:0;margin:60pt 60px 60pt 10pt;">Thank you!</h2>
+
+</section>
+
+
+
+	<!-- <section data-background="./figures/phd/nice.gif" data-background-color="#000000" data-background-size="contain" data-transition="slide-in fade-out">
+		<h2 style="position: absolute; top: -320px; left: 180px;">
+			Thank you
+		</h2>
+		<div>&nbsp;</div>
+	</section> -->
+
+
+		</div>
+	</div>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+<script src="plugin/chalkboard/plugin.js"></script>
+<script src="plugin/math/math.js"></script>
+
+	<script>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+
+			width: 1200,
+			height: 700,
+
+			history: true,
+			 transition: 'none',
+			backgroundTransition: 'none',
+			// Enables touch navigation on devices with touch input
+			touch: true,
+			//
+			// // Hide cursor if inactive
+			// hideInactiveCursor: true,
+			//
+			// // Time before the cursor is hidden (in ms)
+			// hideCursorTime: 5000
+
+			hash: true,
+			dependencies: [
+					// ...
+					{ src: 'plugin/handwriting/handwriting.js' },
+
+					// ...
+
+
+											{
+													src: 'plugin/mouse-pointer/mouse-pointer.js',
+													async: false
+												},
+				],
+
+
+								math: {
+									// mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+									config: 'TeX-AMS_HTML-full',
+								},
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealChalkboard ,RevealMath]
+		});
+	</script>
+</body>
+</html>

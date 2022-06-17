@@ -1,0 +1,696 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+		<link rel="stylesheet" href="plugin/chalkboard/style.css">
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/serif.css">
+
+		<!-- <link rel="stylesheet" href="plugin/highlight/monokai.css"> -->
+
+
+
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+
+
+		<link rel="stylesheet" href="dist/theme/brown.css">
+
+
+		<!-- Theme used for syntax highlighted code -->
+	</head>
+	<body {font-size: 0.9em;}>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2 style="font-size: 1.8em;margin-bottom:2cm;">Large Deviations for Degenerate Markov Jump Processes</h2>
+					<h3 style="margin-bottom:0.5cm;"> <font size=15pt>Andrea Agazzi</font></h3>
+				<img  style="margin-bottom:1cm;; border: 0; width:200px; box-shadow: none;" src="./figures/phd/duke_logo.png" alt="UNIGE">
+					<h5>Mathematics of Reaction Networks Seminar, 09.12.2021</h5>
+				</section>
+
+
+
+						<section>
+							<h2>Mass action kinetics</h2>
+							<p align="left">
+								Consider the reaction <big>  \(A + B \overset{r_2}{\rightharpoonup} 2B \)</big>. We see sets of
+							</p>
+
+							<table>
+								<tr>
+									<td align="left" style="border-top: none;border-bottom: none;"> \(\bullet\) Molecules \( \ \mathcal S = \{A,B\}\)</td>
+								</tr>
+								<!-- <tr>
+									<td  align="left" style="border-top: none;border-bottom: none;""> \(\bullet\) Reactions \( \ \mathcal R = \{r_1,r_2,r_3\}\)</td>
+								</tr> -->
+								<tr>
+									<td  align="left" style="border-top: none;border-bottom: none;">\(\bullet\) In/out combinations \( \mathcal C = \{c_{\rm in}^{r_2}, c_{\rm out}^{r_2}\} =  \{(1,1),(0,2)\}\qquad\)</td>
+								</tr>
+							</table>
+
+							<p align="left">
+								The <em>vector of concentrations</em> \(x(t) \in \mathbb R_+^2\) for \(A + B \rightharpoonup 2B\) obeys
+							</p>
+							<p>
+								$$\begin{cases}\dot x_A = - k \cdot x_A x_B \\ \dot x_B = k \cdot x_A x_B \end{cases}$$
+							</p>
+
+
+						</section>
+
+						<section>
+							<h2>
+									Mass action kinetics
+								</h2>
+<div >
+								<p align="left" >
+									A chemical reaction network \((\mathcal S, \mathcal C, \mathcal R)\) is defined by the sets
+								</p>
+
+								<table >
+									<tr >
+										<td style="border-top: none;border-bottom: none;">\(\bullet \ \mathcal S := \{s_1, s_2,\dots, s_d\}\)</td>
+										<td style="border-top: none;border-bottom: none;">of chemical species,</td>
+									</tr>
+									<tr>
+										<td style="border-top: none;border-bottom: none;">\(\bullet \ \mathcal R := \{r_1, r_2,\dots, r_m\}\)</td>
+										<td style="border-top: none;border-bottom: none;">of chemical reactions,</td>
+									</tr>
+									<tr >
+										<td style="border-top: none;border-bottom: none;">\(\bullet \ \mathcal C := \bigcup_{r \in \mathcal R} \{c_{\rm in}^r, c_{\rm out}^r\}\)</td>
+										<td style="border-top: none;border-bottom: none;">of reaction complexes.$\qquad\qquad\qquad$</td>
+									</tr>
+								</table>
+</div>
+							<div >
+								<p align="left">
+									Then, the <em>vector of concentrations</em> \(x(t) \in \mathbb R_+^d\) obeys a set of coupled ODEs
+								</p>
+								<p>
+									$$\frac{{\text d} x}{{\text d}t} = \sum_{r \in \mathcal R} \lambda_r(x)\, c^r \qquad {\rm with } \qquad \lambda_r(x) := k_r \prod_{i = 1}^d x_i^{(c_{\rm in}^r)_i}$$
+								</p>
+								<p align="left">
+									where \( c^r = c_{\rm out}^r - c_{\rm in}^r \in \mathbb Z^d\) are <em>reaction vectors</em> and \(k_r > 0\) are <em>reaction rate constants</em>.
+								</p>
+
+							</div>
+						</section>
+
+
+
+															<!-- <section>
+																<h2>Chemical Reaction Networks</h2>
+																<p align="left">
+																	Consider the reactions <big> \(\emptyset \overset{r_1}{\rightharpoonup} A + B \overset{r_2}{\rightharpoonup} 2B \overset{r_3}{\rightharpoonup} A\)</big>. We see sets of
+																</p>
+																<table>
+																	<tr>
+																		<td class="fragment" align="left"> \(\bullet\) Molecules \( \ \mathcal S = \{A,B\}\)</td>
+																	</tr>
+																	<tr>
+																		<td class="fragment" align="left"> \(\bullet\) Reactions \( \ \mathcal R = \{r_1,r_2,r_3\}\)</td>
+																	</tr>
+																	<tr>
+																		<td class="fragment" align="left">\(\bullet\) In/out combinations \( \mathcal C = \{(0,0),(1,1),(0,2),(1,0)\}\)</td>
+																	</tr>
+																</table>
+
+																<p align="left" class="fragment">
+																	A chemical reaction network \((\mathcal S, \mathcal C, \mathcal R)\) is defined by the sets
+																</p>
+
+																<table class="fragment">
+																	<tr>
+																		<td>\(\bullet \ \mathcal S := \{s_1, s_2,\dots, s_d\}\)</td>
+																		<td>of chemical species,</td>
+																	</tr>
+																	<tr>
+																		<td>\(\bullet \ \mathcal R := \{r_1, r_2,\dots, r_m\}\)</td>
+																		<td>of chemical reactions,</td>
+																	</tr>
+																	<tr>
+																		<td>\(\bullet \ \mathcal C := \bigcup_{r \in \mathcal R} \{c_{\rm in}^r, c_{\rm out}^r\}\)</td>
+																		<td>of reaction complexes.</td>
+																	</tr>
+																</table>
+															</section>
+
+															<section>
+																<h2>
+																		Mass action kinetics
+																	</h2>
+																<p align="left">
+																	The <em>vector of concentrations</em> \(x(t) \in \mathbb R_+^d\) for \(A + B \rightharpoonup 2B\) obeys
+																</p>
+																<p>
+																	$$\begin{cases}\dot x_A = - k \cdot x_A x_B \\ \dot x_B = k \cdot x_A x_B \end{cases}$$
+																</p>
+																<div class="fragment">
+																	<p align="left">
+																		More generally we have a set of coupled ODEs
+																	</p>
+																	<p>
+																		$$\frac{{\text d} x}{{\text d}t} = \sum_{r \in \mathcal R} \lambda_r(x)\, c^r \qquad {\rm with } \qquad \lambda_r(x) := k_r \prod_{i = 1}^d x_i^{(c_{\rm in}^r)_i}$$
+																	</p>
+																	<p align="left">
+																		where \( c^r = c_{\rm out}^r - c_{\rm in}^r \in \mathbb Z^d\) are <em>reaction vectors</em> and \(k_r > 0\) are <em>reaction rate constants</em>.
+																	</p>
+
+															</section> -->
+
+
+						<section data-background="./figures/phd/animation61.gif" data-background-size="65%" data-transition="fade-in slide-fade ">
+							<h2 style="position: absolute; top: -150px; left: 220px;">
+									Deterministic dynamics
+								</h2>
+							<p style="position: absolute; top: 240px; left: 200px;">$$\emptyset \overset{r_1}{\rightharpoonup} A + B \overset{r_2}{\rightharpoonup} 2B \overset{r_3}{\rightharpoonup} A\\ \begin{cases}\dot x_A & = k_1 - k_2 x_A x_B + k_3 x_B^2\\ \dot x_B & = k_1 + k_2 x_A x_B - 2 k_3 x_B^2\end{cases}$$</p>
+							<div>&nbsp;</div>
+						</section>
+
+
+						<section data-background="./figures/phd/nicer.gif" data-background-color="#000000" data-background-size="contain" data-transition="slide-in fade-out">
+							<h2 style="position: absolute; top: -320px; left: 190px;">
+								Deterministic Dynamics
+							</h2>
+							<div>&nbsp;</div>
+						</section>
+
+
+									<section>
+										<h2 style="margin-bottom: 30px;">Microscopic Markov model</h2>
+										<p align="left" style="font-size:0.9em">
+											With \(N_t \in \mathbb N_0^d\) counting the molecules of each species in a reactor of volume \(v\), we define the concentration vector \(X_t^v = v^{-1} N_t\in (v^{-1} \mathbb N_0)^d\) and  model the dynamics of the system as a pure jump Markov
+											model.
+										</p>
+										<div class="fragment" data-fragment-index="1" style="float:left; width: 1000px;">
+											<p align="left" class="fragment" data-fragment-index="1" style="font-size:0.9em">Each reaction \(r\) (a jump by \(v^{-1}c^r\)) occurs at a rate \(v \Lambda_{r}^{(v)}\)
+												<font class="fragment" data-fragment-index="1"> where </font>
+											</p>
+											<p>
+												$$\Lambda_r^{(v)}(x):= \frac{k_r}{v^{\|c_{\rm in}^r\|_1}}\prod_{i = 1}^d\binom{v x_i}{(c_{\rm in}^r)_i}(c_{\rm in}^r)_i! = k_r \prod_{i = 1}^d x_i^{(c_{\rm in}^r)_i}+ o_v(1)$$</p>
+											</p>
+
+										</div>
+										<div class="fragment" data-fragment-index="2" style="width: 960px; float:left;">
+											<p align="left">Generator of $X_t^v$: $\mathcal L_v f(x) := v\sum_{r \in \mathcal R} \Lambda_{r}^{(v)} (x) \left(f(x + v^{-1}c^r) -f(x)\right)$</p>
+										</div>
+									</section>
+
+
+
+
+						<section>
+							<h2>Law of Large Numbers</h2>
+							<p align="left"><b>
+									Theorem $\left[\text{Kurtz '70}\right]$:
+								</b></p>
+							<p align="left">
+								The sample paths of the process $X_t^v$ on \(t \in [0,T]\) converge almost surely for \(v \to \infty\) and \(X_0^v \to x_0\) to the deterministic solution \(x(t)\) with initial condition \(x(0) = x_0\).</p>
+								<div>
+									<p style="position: absolute; top: 600px; left: 340px;">$\emptyset \overset{r_1}{\rightharpoonup} A + B \overset{r_2}{\rightharpoonup} 2B \overset{r_3}{\rightharpoonup} A$</p>
+													<img  style="border: 0; width:530px; box-shadow: none; margin:0px 50px 30px 50px;padding=0px" src="./figures/phd/animation41.gif"  vertical-align="bottom">
+								</div>
+						</section>
+
+						<!-- <section data-background="./figures/phd/animation41.gif" data-background-size="60%" data-transition="fade-in slide-fade ">
+							<h2 style="position: absolute; top: -140px; left: 280px;">
+									Convergence to x(t)
+								</h2>
+							<p style="position: absolute; top: 310px; left: 250px;">$$\emptyset \overset{r_1}{\rightharpoonup} A + B \overset{r_2}{\rightharpoonup} 2B \overset{r_3}{\rightharpoonup} A$$</p>
+							<div>&nbsp;</div>
+						</section> -->
+
+						<!--
+						<section>
+							<section data-background-color="#000000">
+								<h3 style="margin-bottom:0cm;"> <font size=15pt>Tossing coins</font></h3>
+								<div>
+									<video id="video1" width="760">
+										<source src="./figures/phd/heads_final3.mp4" type="video/mp4">
+									</video>
+									<br>
+									<button onclick="playPause()">Play/Pause</button>
+									<button onclick="makeBig()">Big</button>
+									<button onclick="makeSmall()">Small</button>
+									<button onclick="makeNormal()">Normal</button>
+								</div>
+
+							</section>
+						</section>-->
+
+
+					<!--	<section>
+							<h2>Asymptotic estimates</h2>
+
+
+								<p align="left">
+									For \(T< \infty\), \(X_0^v \to x_0\) and \(v\) large we seek estimates such as
+								</p>
+								<p>
+									$$\mathbb P_{X_0^v}\left[\sup_{t \in [0,T]}\|X_t^v - x(t)\| > \varepsilon\right] \approx e^{-v I_{x_0,T}^\varepsilon(x)}~,$$
+								</p>
+								<p align="left">
+									where \(I_{x_0,T}^\varepsilon\) is a <em>cost function</em>.
+								</p>
+								<div class="fragment">
+								<p align="left">
+									We also want to extend such estimates to infinite time intervals.
+									For example, given a compact \(\mathcal D \ni x_0\) we seek estimates for the expected exit time \(\tau_{\mathcal D}\) such as
+								</p>
+								<p>
+									$$\mathbb E_{X_0^v} \left[\tau_{\mathcal D}\right] \approx e^{v \mathcal V_{\mathcal D}(x_0, \partial \mathcal D)}~,$$
+								</p>
+								<p align="left">
+									or, similarly, for the transition times between sets of attractors.
+								</p>
+							</div>
+						</section>--->
+
+
+
+			<section>
+				<h2 style="margin-bottom:30px;">
+						Large Deviations Principle (LDP)
+					</h2>
+				<p align="left">
+					A LDP holds if, for any set \(\Gamma \subset D_{0,T} (\mathbb R_+^d)\), \(X_0^v = x_0^v \to x_0\), we have				</p>
+				<div>
+					<p >$$ \mathbb P_{x_0^v}\left[X^v \in \Gamma\right] \asymp\exp\left[-v \inf_{z \in \Gamma} I_{x_0,T}(z)\right]\qquad \text{as } v \to \infty$$</p>
+			</div>
+				<div >
+					<!-- <p class="fragment fade-in" data-fragment-index="0">
+						$$ \liminf_{v \to \infty} v^{-1} \log \mathbb P_{x_0^v}\left[X^v \in \Gamma\right] \geq -\inf_{z \in \Gamma^o} I_{x_0,T}(z) $$ $$ \limsup_{v \to \infty} v^{-1} \log \mathbb P_{x_0^v}\left[X^v \in \Gamma\right] \leq -\inf_{z \in \bar \Gamma} I_{x_0,T}(z)
+						\,\,\,\,\, $$
+					</p> -->
+				<p align="left">
+					where we define the <em>Lagrangian</em> and the <em>rate (action) functional</em> as
+				</p>
+				<p>
+				<!-- <table style="margin:auto; font-size: 0.9em;">
+					<tr>
+						<td align="right" style="border-top: none;border-bottom: none;"> -->
+							$$\begin{align*} L( z,  z') :=& \inf_{ \{\mu\in\mathbb R_+^{|\mathcal R|} :~ \sum_{r \in \mathcal R\\ \,} \mu_r c^r = z' \}}\!\,\,\, \sum_{r \in \mathcal R} \lambda_r(z) - \mu_r + \mu_r \log \frac {\mu_r}{\lambda_r(z)}  \qquad \quad \\
+							I_{x_0,T}(z) := & \begin{cases}\int_0^T L(z(s),z'(s)) {\rm d}s &z \in \mathcal{AC}_{0,T}(\mathbb R_+^d), z(0) = x_0\\\infty & \text{otherwise}\end{cases}
+							\end{align*}
+							$$
+						<!-- </td>
+						<td style="border-top: none;border-bottom: none;">
+							$$\inf_{ \{\mu\in\mathbb R_+^{|\mathcal R|} :~ \sum_{r \in \mathcal R} \mu_r c^r = z' \}}\!\,\,\, \sum_{r \in \mathcal R} \lambda_r(z) - \mu_r + \mu_r \log \frac {\mu_r}{\lambda_r(z)}  \qquad \quad $$
+						</td>
+					</tr>
+					<tr>
+						<td align="right" style="border-top: none;border-bottom: none;">
+							$$I_{x_0,T}(z) :=$$
+						</td>
+						<td align="left" style="border-top: none;border-bottom: none;">
+							$$\begin{cases}\int_0^T L(z(s),z'(s)) {\rm d}s &z \in \mathcal{AC}_{0,T}(\mathbb R_+^d), z(0) = x_0\\\infty & \text{otherwise}\end{cases} $$
+						</td>
+					</tr>
+				</table> -->
+			</p>
+			</div>
+			</section>
+
+						<!-- <section>
+							<h2 style="margin-bottom:30px;">
+									Large Deviations Principle (LDP)
+								</h2>
+							<p align="left">
+								A LDP holds if, for any set \(\Gamma \subset D_{0,T} (\mathbb R_+^d)\), \(X_0^v = x_0^v \to x_0\), we have				</p>
+							<div >
+								<p >
+									$$ \liminf_{v \to \infty} v^{-1} \log \mathbb P_{x_0^v}\left[X^v \in \Gamma\right] \geq -\inf_{z \in \Gamma^o} I_{x_0,T}(z) $$ $$ \limsup_{v \to \infty} v^{-1} \log \mathbb P_{x_0^v}\left[X^v \in \Gamma\right] \leq -\inf_{z \in \bar \Gamma} I_{x_0,T}(z)
+									\,\,\,\,\, $$
+								</p>
+							<p align="left">
+								where we define the <em>Lagrangian</em> and the <em>rate (action) functional</em> as
+							</p>
+							<table style="margin:auto; font-size: 0.9em;">
+								<tr>
+									<td align="right">
+										$$ L( z,  z') :=$$
+									</td>
+									<td>
+										$$\inf_{ \{\mu\in\mathbb R_+^{|\mathcal R|} :~ \sum_{r \in \mathcal R} \mu_r \gamma^r = z' \}}\!\,\,\, \sum_{r \in \mathcal R} \lambda_r(z) - \mu_r + \mu_r \log \frac {\mu_r}{\lambda_r(z)}  \qquad \quad $$
+									</td>
+								</tr>
+								<tr>
+									<td align="right">
+										$$I_{x_0,T}(z) :=$$
+									</td>
+									<td align="left">
+										$$\begin{cases}\int_0^T L(z(s),z'(s)) {\rm d}s &z \in AC_{0,T}(\mathbb R_+^d), z(0) = x_0\\\infty & \text{otherwise}\end{cases} $$
+									</td>
+
+								</tr>
+							</table>
+						</div>
+						</section> -->
+
+
+			<section data-background="./figures/phd/nice.gif" data-background-color="#000000" data-background-size="contain" data-transition="slide-in fade-out">
+				<div>&nbsp;</div>
+			</section>
+
+
+			<section>
+				<h2 style="margin-bottom:30px;">
+						Obstructions to LDP
+					</h2>
+				<p align="left">
+					Standard results establishing LDPs for Markov jump processes assume that the rates \(\Lambda_r^{(v)}(x)\)
+ are bounded away from zero.
+				</p>
+				<p align="left">
+				This is not true in our setting (boundary effects: \(\Lambda_r^{(v)}(0) = 0\)). However...
+				</p>
+				<div class="fragment">
+					<p align="left">
+						<b>Example:</b> Consider the reactions $r_1~:~A \to \emptyset$, $r_2~:~2A \to 3 A$, with </p><p>$$\lambda_1(x) = x\,,\qquad \lambda_2(x) = x^2 1_{[0,1]}(x)$$</p><p align="left"> We see that $X_0=0$ is an absorbing state for $X_t^v$. However for $z(t) = t$
+					</p><p>
+						$$I_{0,T}(z) \leq \int_0^1 1 \log \frac 1{\lambda_2(t)} -1 + \lambda_2(t)+ \lambda_1(t) \,d t < \infty $$
+					</p>
+					<p align="left" class="fragment">
+						<b>$\Rightarrow$ At least formally the LDP makes sense</b>  </p>
+		</div>
+			</section>
+
+<section>
+			<section>
+				<h2 style="margin-bottom:30px;">
+						Existing literature
+					</h2>
+					<p align="left">
+					Multiple efforts were made to relax this assumption:
+					</p>
+					<ul style="float:left;padding:0;margin:0pt;">
+
+							<li style="float:left;padding:5px;margin:0;font-size:0.8em">
+							<b>Shwartz, Weiss.</b> Large deviations with diminishing rates. Math. Oper. Res. 30 (2005)
+
+
+							<li style="float:left;padding:5px;margin:0;font-size:0.8em">
+								<b>Dupuis, Ramanan and Wu.</b> Large deviation principle for finite-state mean field interacting particle systems. Technical Report
+			 1601.06219, arXiv (2016).
+
+				<li style="float:left;padding:5px;margin:0;font-size:0.8em">
+				 <b>A., Dembo and Eckmann.</b> Large deviations theory for Markov jump models of
+				chemical reaction networks. Annals of Applied Probability (2018)
+
+
+								<li style="float:left;padding:5px;margin:0;font-size:0.8em">
+								 <b>Anderson, Cappelletti, Kim and Nguyen.</b> Tier structure of strongly endotactic reaction networks. Stochastic Processes and their Applications (2020)
+
+				<li style="float:left;padding:5px;margin:0;font-size:0.8em">	<b>Patterson and Renger.</b> Large Deviations of Jump Process Fluxes. Mathematical Physics, Analysis and Geometry 22 (2019)
+					<li style="float:left;padding:5px;margin:0;font-size:0.8em"><b>Kratz and Pardoux.</b> Large deviations for infectious diseases models, Séminaire de Probabilités XLIX. Lecture Notes in Mathematics, 2215 (2018)
+
+				</ul>
+			</section>
+
+			<section>
+				<!-- <h2>Why is this a problem?</h2> -->
+				<p align="left" style="font-size:0.8em">
+					The proof of LDP lower bound for $\mathbb P_{x_0^v}[\|X^v-z\| < \epsilon]$ follows 3 steps:</p>
+					<ul style="float:left;padding:0;margin:0pt;">
+
+							<li style="float:left;padding:5px;margin:0;font-size:0.8em">
+							Split up the time interval $[0,T]$ into small intervals of length $\eta > 0$</li>
+
+						<li style="float:left;padding:5px;margin:0;font-size:0.8em">	In each interval, approximate the path $z$ as a linear path $\bar z^{(i)}$
+
+					<li style="float:left;padding:5px;margin:0;font-size:0.8em">
+						show that the large deviations "cost" of the process $X_t^v$ following the path $\bar z_i$ is approximately given by
+						$\mathbb P[\|X^v - \bar z^{(i)}\|< \epsilon] \asymp \exp\left[- v \eta  L(z,\bar z^{(i)})\right]$
+						where
+						<li style="list-style: none;float:left;padding:5px;margin:0;font-size:0.8em">
+						$$L(z,\bar z^{(i)}) = \sum_r \lambda_r(z) - \mu_r + \log\left( \frac{\lambda_r(z)}{\mu_r}\right) \qquad \text{for } \sum_{r} \mu_rc^r = (\bar z^{(i)})' $$
+
+						$$\begin{align*}\Rightarrow\mathbb P_{x_0^v}[\|X^v-z\| < \epsilon] \approx \prod_i \mathbb P[\|X^v-\bar z^{(i)}\| < \epsilon] &\asymp \exp\left[- v \eta \sum_i L(z,\bar z^{(i)})\right] \\&\xrightarrow{\eta \to 0} \exp\left[- v I_{x_0,T}(z)\right]\end{align*}$$
+					</ul><p align="left" class="fragment">
+					<b>Problem:</b> When some $\lambda_r = 0$ the above expression is ill defined.
+				</p>
+			</section>
+
+</section>
+				<section>
+					<h2>Partial summary</h2>
+					<p align="left">
+						<b>Example:</b> Consider the reactions $r_1~:~A \to \emptyset$, $r_2~:~2A \to 3 A$, with </p><p>$$\lambda_1(x) = x\,,\qquad \lambda_2(x) = x^2 1_{[0,1]}(x)$$</p><p align="left"> We see that $X_0=0$ is an absorbing state for $X_t^v$. However for $z(t) = t$
+					</p><p>
+						$$I_{0,T}(z) \leq \int_0^1 1 \log \frac 1{\lambda_2(t)} -1 + \lambda_2(t)+ \lambda_1(t) \,d t < \infty $$
+					</p>
+					<p align="left" class="fragment">
+						We would like to prove an LDP lower bound, but
+					</p>
+					<table>
+						<tr>
+							<td class="fragment" align="left" style="border-top: none;border-bottom: none;"> \(\bullet\) The local change of measure argument used for this type of processes is ill-defined on the boundary.</td>
+						</tr>
+						<tr>
+							<td class="fragment" align="left" style="border-top: none;border-bottom: none;"> \(\bullet\) The LDP depends on the microscopic sequence of initial conditions: if $x_0^v \equiv 0$ then $\log \mathbb P_0[X_1^v>0] \equiv - \infty$.</td>
+						</tr>
+					</table>
+				</section>
+
+
+
+				<section>
+<h2>The main result</h2>
+<div style="border: 2px solid black;padding: 10px 10px 0px 10px;">
+					<p align="left" ><b>Theorem (A., Andreis, Patterson, Renger, 2021):</b></p>
+					<p align="left">
+						Assume that $\mathcal D$ is compact, and that $x_0^v \in \mathcal D \subset \mathbb R_+^d$ is a sequence of initial conditions such that
+				$\mathbb P_{x_0^v}[d(X_t^v, \partial \mathcal D)> \epsilon ] > 0 \text{ for all } v>0, t>0$
+							<!--<li style="font-size:0.9em">There exists $\alpha\in [0,1)$ s.t. the rates $\{\lambda_r\}$ decay slower than $e^{-1/x^\alpha}$  as the boundary is approached:
+								$$\lim\sup_{\rho \to 0}\rho^\alpha \left({\inf_{x \in \mathcal D \colon d(x,\partial \mathcal D_j)> \rho} \log\lambda_r(x)}\right) =0$$</li>
+						</ul>-->
+						then a pathwise LDP in \(D_{0,T}(\mathcal D)\) holds with rate function $I_{x_0,T}(z)$.
+					</p>
+				</div>
+				</section>
+<section>
+				<h2>Proof sketch</h2>
+				<div >
+				<p align="left">
+					We estimate $\mathbb P_{x_0^v}[\sup_{t \in [0,T]}\|X_t^v - z(t)\|_2< \epsilon]$ for a fixed $z \in \mathcal{AC}_{0,T}(\mathcal D)$
+						</p>
+						<p align="left">
+							We approximate the original path $z$ away from the boundary with a $\delta$-perturbation $\mathfrak{z}_\delta$ resulting from a combination of
+					</p>
+						</div>
+						<div style="float:left; width:520px;">
+						<table style="margin:auto; font-size: 0.9em;">
+							<tr>
+								<td align="left" style="border-top: none;border-bottom: none;">
+						$\bullet$ an initial shift $\,\,s_{\delta}(t) = x_0 + w\,t $ on $\,\,t \in (0,\delta)$
+								</td>
+							</tr>
+							<tr>
+								<td align="left" style="border-top: none;border-bottom: none;">
+						$\bullet$ a shifted version of the path $z$: $\,\,z_{\delta}(t) = z(t-\delta)+ w\,\delta $ on $t \in (\delta,T)$
+								</td>
+							</tr>
+							<tr>
+								<!-- <td align="left">
+We then show that the LDP holds for the shifted path and that it converges to the desired LDP								</td>
+							</tr> -->
+							<!-- <p align="left">
+								We then show that the LDP holds for the shifted path and that it converges to the desired LDP
+						</p> -->
+						</table>
+						</div >
+						<div>
+											<img  style="border: 0; width:330px; box-shadow: none; margin:0px 50px 30px 50px;padding=0px" src="./figures/phd/perturbation_final3.png" align="left" vertical-align="bottom">
+						</div>
+						<!-- <p align="left">
+							We then show that the LDP holds for the shifted path and that it converges to the desired LDP
+					</p> -->
+</section>
+		<section>
+			<section>
+							<h2>Proof sketch</h2>
+							<div >
+								<p align="left">
+									We then show that the LDP holds for the shifted path and that it converges to the desired LDP:
+							</p>
+									</div>
+									<div style="float:left; width:590px;">
+
+									<table style="margin:auto; font-size: 0.9em;">
+										<tr>
+											<td align="left" style="border-top: none;border-bottom: none;">
+									$\bullet$ LDP holds for <br>$\,\,s_{\delta}(t) = x_0 + w\,t $ on $t \in (0,\delta)$
+											</td>
+										</tr>
+										<tr>
+											<td align="left" style="border-top: none;border-bottom: none;">
+									$\bullet$ LDP holds for $\,\,z_{\delta}(t) = z(t-\delta)+ w\,\delta $ on $t \in (\delta,T)$
+											</td>
+										</tr>
+										<tr>
+											<td align="left" style="border-top: none;border-bottom: none;">
+									$\bullet$ $\lim_{\delta \to 0} I(s_\delta) = 0$
+											</td>
+											<tr>
+												<td align="left" style="border-top: none;border-bottom: none;">
+										$\bullet$ $\lim_{\delta \to 0} I(z_\delta) = I(z)$
+												</td>
+											</tr>
+										</tr>
+									</table>
+									</div >
+									<div>
+														<img  style="border: 0; width:330px; box-shadow: none; margin:0px 00px 30px 50px;padding=0px" src="./figures/phd/perturbation_final3.png" align="left" vertical-align="bottom">
+									</div>
+<p style=" margin:50px 250px 30px 50px;">
+									$$ \begin{align*}\Rightarrow  P_{x_0^v}[\|X^v - z\|< \epsilon] &  \approx \lim_{\delta \to 0} P_{x_0^v}[\|X^v - z_\delta\| < \epsilon/2,\|X^v - s_\delta\| < \epsilon/2] \\& \asymp \lim_{\delta \to 0} e^{-v I(s_\delta)}\cdot e^{-v I(z_\delta)} \asymp e^{-v I(z)}\end{align*}$$</p>
+			</section>
+<section>
+	<div>
+						<img  style="border: 0; width:830px; box-shadow: none; margin:0px 50px 30px 50px;padding=0px" src="./figures/phd/perturbation_final2.png"  vertical-align="bottom">
+	</div>
+</section>
+				<section>
+
+					<h4 align="left" style="font-size: 1.1em;">Proof sketch:</h3>
+					<p align="left">
+						<ul >
+							<li style="font-size:0.9em;margin: 0 0 13px 0;">Consider $A \to 2A$, so that $\Lambda_+(x) = x$, and $\Gamma = \mathcal B_{[0,\delta]}(z, \delta/2)$ for $z(t) = t$</li>
+							<li style="font-size:0.9em; margin: 0 0 13px 0; line-height: 1.8;">Couple $X_t^v$ to $\tilde X_t^v$ adding a ghost reaction with $\Lambda_0 = 1$ $c^{r_0} = 0$, so that <br>
+							$$\mathbb P(X_{\delta}^v \in \mathcal B_{\delta/2}(\delta)) = \mathbb P(\tilde X_{\delta}^v \in \mathcal B_{\delta/2}(\delta)) \geq \mathbb P(\text{only} + \text{ jumps}| B_\delta) \mathbb P(B_\delta)$$
+						for $B_\delta = \{(\text{# jumps before }\delta) \in (v \delta/2, 3v \delta/2)\}$</li>
+						<li style="font-size:0.9em; margin: 0 0 13px 0; line-height: 1.8;">So we can estimate
+						$$ v^{-1}\log \mathbb P(X_{\delta}^v \in \mathcal B_{\delta/2}(\delta)) \geq v^{-1} \sum_x \log \mathbb P_x(\tau_+ < \tau_0| B_\delta) $$
+						$$\qquad \qquad \quad  \approx \int_0^\delta \log \Lambda_+(x) d x$$
+					</li>
+						</ul>
+					</p>
+						</section>
+</section>
+
+
+
+
+<!-- <section>
+	<h2>Bibliography</h2>
+	<ul style="float:left;padding:0;margin:10pt;">
+
+			<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+			A. Agazzi, L. Andreis, R. Patterson, and M. Renger. Large deviations for jump Markov processes with
+			uniformly diminishing rates. submitted (2021), arXiv:2102.13040
+
+		<li style="float:left;padding:5px;margin:0;font-size:0.9em">	A. Agazzi and J. C. Mattingly. Seemingly stable chemical kinetics can be stable, marginally stable, or
+unstable. Communications in Mathematical Sciences 18 (2020), 1605 – 1642
+
+
+<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+ A. Agazzi, A. Dembo, and J.-P. Eckmann. Large deviations theory for Markov jump models of
+chemical reaction networks. The Annals of Applied Probability 28 (2018), 1821–1855
+
+<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+ A. Agazzi, A. Dembo, and J.-P. Eckmann. On the geometry of chemical reaction networks: Lyapunov
+function and large deviations. Journal of Statistical Physics 172 (2018), 321–352
+
+
+
+</ul>
+</section> -->
+
+
+ <section>
+	<h2>Conclusions</h2>
+	<ul style="float:left;padding:0;margin:10pt 10pt 30pt 10pt;">
+
+			<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+			LDP for processes with vanishing rates can be established, and holds quite generally for mass action systems</li>
+</ul>
+<p align="left" style="font-size:1.1em">
+	Open questions
+</p>
+	<ul style="float:left;padding:0;margin:10pt;">
+<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+Add spatial diffusion to this model</li>
+
+<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+Mass action kinetics at multiple scales</li>
+
+<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+Establish positive recurrence based on structural properties of the network</li>
+</ul>
+</section>
+
+
+<section>
+			<section data-background="./figures/phd/nice.gif" data-background-color="#000000" data-background-size="contain" data-transition="slide-in fade-out">
+				<h2 style="position: absolute; top: -320px; left: 180px;">
+					Thank you
+				</h2>
+				<div>&nbsp;</div>
+			</section>
+
+
+
+
+		</div>
+	</div>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+<script src="plugin/chalkboard/plugin.js"></script>
+<script src="plugin/math/math.js"></script>
+
+	<script>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+
+			width: 1200,
+			height: 700,
+
+			history: true,
+			// transition: 'none',
+			backgroundTransition: 'none',
+			// Enables touch navigation on devices with touch input
+			touch: true,
+			//
+			// // Hide cursor if inactive
+			// hideInactiveCursor: true,
+			//
+			// // Time before the cursor is hidden (in ms)
+			// hideCursorTime: 5000
+
+			hash: true,
+			dependencies: [
+					// ...
+					{ src: 'plugin/handwriting/handwriting.js' },
+
+					// ...
+
+
+											{
+													src: 'plugin/mouse-pointer/mouse-pointer.js',
+													async: false
+												},
+				],
+
+
+								math: {
+									// mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+									config: 'TeX-AMS_HTML-full',
+								},
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealChalkboard ,RevealMath]
+		});
+	</script>
+</body>
+</html>

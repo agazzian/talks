@@ -1,0 +1,769 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+		<link rel="stylesheet" href="plugin/chalkboard/style.css">
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/serif.css">
+
+		<!-- <link rel="stylesheet" href="plugin/highlight/monokai.css"> -->
+
+
+
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+
+
+		<link rel="stylesheet" href="dist/theme/brown.css">
+
+<!-- Theme used for syntax highlighted code -->
+</head>
+
+<body {font-size: 0.9em;}>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h2 style="font-size: 1.8em;margin-bottom:2cm;">Convergence and optimality of single layer neural netowrks for reinforcement learning</h2>
+				<h3 style="margin-bottom:0.5cm;">
+					<font size=15pt>Andrea Agazzi</font>
+				</h3>
+				<img style="margin-bottom:1cm;; border: 0; width:300px; box-shadow: none;" src="./figures/crc/logo_unipi.png" alt="UNIGE">
+				<h5>Third Italian Meeting in Probability and Statistics, 14.06.2022</h5>
+			</section>
+
+			<section>
+												<section>
+													<!--data-transition="slide-in slide-out"-->
+													<h2 style=" font-size:1.6em">
+														Reinforcement Learning
+													</h2>
+													<div>
+														<img src="./figures/mf/RL_trans2.png" align="center" vertical-align="top" style="margin:0px;border: 0; width:425px; box-shadow: none; ">
+													</div>
+
+													<div style="position:relative">
+														<p align="left" style="width:200px;font-size: 0.9em;margin-bottom:0px">
+							 Example: TicTacToe
+														 </p>
+														<img src="./figures/mf/ttt3.png" align="center" vertical-align="top" style="border: 0; width:575px; box-shadow: none; position:absolute; top: 0px;left:300px;" class="fragment fade-in" data-fragment-index="1">
+														<img src="./figures/mf/ttt4.png" align="center" vertical-align="top" style="border: 0; width:575px; box-shadow: none; position:absolute; top: 0px; left:300px;" class="fragment fade-in" data-fragment-index="2">
+														<img src="./figures/mf/ttt5.png" align="center" vertical-align="top" style="border: 0; width:025px; box-shadow: none; position:relative; " class="fragment fade-in" data-fragment-index="2">
+													</div>
+													<table style="font-size:0.8em;margin-top:50px">
+														<tr>
+															<td class="fragment" align="left"> We observe the following elements:</td>
+														</tr>
+														<tr>
+															<td class="fragment" align="left"> \(\bullet\) A <em>state space</em> $\mathcal S$ and an <em>action space</em> $\mathcal A$</td>
+														</tr>
+														<tr>
+															<td class="fragment" align="left"> \(\bullet\) A <em>transition kernel</em> $P~:~\mathcal S \times \mathcal A \to \mathcal M_+^1(\mathcal S)$ (response of the environment)</td>
+														</tr>
+														<tr>
+															<td class="fragment" align="left">\(\bullet\) A bounded <em>reward</em> $R~:~\mathcal S  \to \mathbb R$ (the payoff in a state)</td>
+														</tr>
+													</table>
+												</section>
+
+
+<!--
+												<section>
+													<h2 style="margin-bottom: 30pt;">Markov Decision Processes</h2>
+													<p align="left">
+														Model the <em>environment</em> as a Markov Decision Process (MDP)
+													</p>
+													<table>
+														<tr>
+															<td class="fragment" align="left"> \(\bullet\) A compact <em>state space</em> $\mathcal S$ and an <em>action space</em> $\mathcal A$</td>
+														</tr>
+														<tr>
+															<td class="fragment" align="left"> \(\bullet\) A <em>transition kernel</em> $P~:~\mathcal S \times \mathcal A \to \mathcal M_+^1(\mathcal S)$ </td>
+														</tr>
+														<tr>
+															<td class="fragment" align="left">\(\bullet\) A bounded <em>reward</em> $R~:~\mathcal S \times \mathcal A \to \mathbb R$ (the payoff of an action)</td>
+														</tr>
+													</table>
+
+													<div class="fragment">
+														<p align="left" style="font-size: 0.9em;">
+															TicTacToe: $\mathcal S = \{0,1,-1\}^9$, $\mathcal A \subseteq \{1, \dots, 9\}$, $R(s,a) = \begin{cases}1 ~~\,\text{if win}\\
+															-1 \text{ if lose}\end{cases}$.
+														</p>
+													</div>
+
+													<p align="left" class="fragment"> Model the <em>agent</em> through its strategy:</p>
+													<table>
+														<tr>
+															<td class="fragment" align="left"> \(\bullet\) A <em>policy</em> $\pi~:~\mathcal S \to \mathcal M_+^1(\mathcal A)$ (actions chosen by agent at state $s$)</td>
+														</tr>
+													</table>
+													<p align="left" class="fragment"> For each $\pi$ we have an effective kernel $P_\pi(s, ds') = \int P(s,a, d s') \pi(s,d a)$</p>
+
+
+
+
+												</section> -->
+
+											</section>
+
+												<section>
+													<h2 style="margin-bottom: 30pt;">Policy and objective</h2>
+
+													<p align="left" > Model the <em>agent</em> through its strategy:</p>
+													<table>
+														<tr>
+															<td align="left"> \(\bullet\) A <em>policy</em> $\pi~:~\mathcal S \to \mathcal M_+^1(\mathcal A)$ (actions chosen by agent at state $s$)</td>
+														</tr>
+													</table>
+													<p align="left" class="fragment"> For each $\pi$ we have an effective kernel $P_\pi(s, ds') = \int P(s,a, d s') \pi(s,d a)$</p>
+
+			<div class="fragment" style="width:1200px">
+													<p align="left" style="font-size: 0.9em;width:1200px;">
+														Fixing $\gamma \in (0,1)$,  the expected future reward starting at $s$ is
+													</p>
+													<p>$$V_\pi^*(s) := \mathbb E_\pi\left[ \sum_{k=0}^\infty \gamma^k R(s_k,a_k)\,\Big|\,s_0 = s\right]\quad \mathrm{(value\,\, function)}$$ </p>
+
+
+													<p align="left" style="font-size: 0.9em;">
+													<b>Objective:</b> 	For $ \rho_0$ fixed, find a policy $\pi$ maximizing $\mathcal E(\pi) = \mathbb E\left[ V_\pi^*(s)\,|\,s \sim \rho_0\right]$ </p>
+	</div>
+
+
+			<!-- <div class="fragment" style="width:1200px">
+													<p align="left" style="font-size: 0.9em;width:1200px">
+														<b>Objective:</b> fixing $\gamma \in (0,1)$, find a policy $\pi$ maximizing the expected future reward
+													</p>
+													<p>$$\mathcal E_{\rho_0}(\pi) := \mathbb E_\pi\left[ \sum_{k=0}^\infty \gamma^k R(s_k)\,\Big|\,s_0 \sim \rho_0\right]\quad \mathrm{(objective\,\, function)}$$ </p>
+
+												</div> -->
+												</section>
+
+												<section>
+
+													<h2 style="margin-bottom: 30pt;">Learning $V^*_\pi$: the Bellman operator </h2>
+
+
+													<p align="left" style="font-size: 0.9em;">
+														For <em>fixed</em> $\pi$ the value function must satisfy</p>
+													<p>\begin{align}V_\pi^*(s) & = \mathbb E_\pi\left[ R(s_0,a_0) + \gamma (R(s_1,a_1) + \gamma R(s_2,a_2) + \dots)\,\Big|\,s_0 = s\right]
+														\\& \, = \mathbb E_\pi\left[ R(s_0,a_0) + \gamma V_\pi^*(s_1)\,\Big|\,s_0 = s\right]\,\end{align} </p>
+
+														<p align="left" style="font-size: 0.9em;">
+															In other words, $V_\pi^*(s)$ is a fixed point of the <em>Bellman</em> operator
+														</p>
+														<p>\begin{align} T^\gamma V(s) & = \mathbb E_\pi\left[ R(s_0,a_0) + \gamma V(s_1)\,\Big|\,s_0 = s\right]\,\end{align} </p>
+
+												</section>
+												<section>
+													<h2 style="margin-bottom: 30pt;">Temporal-difference learning</h2>
+													<p align="left">
+														The operator
+														$$ T^\gamma V(s) = \mathbb E_\pi\left[ R(s_0,a_0) + \gamma V(s_1)\,|\,s_0 = s\right]\, $$</p>
+													<p align="left">is a contraction in $L^2(\mu)$ where $\mu$ is the invariant measure of $P_\pi$ (assumed unique and with full support)
+													</p>
+													<div class="fragment">
+														<p align="left">
+															This suggests the <em>Temporal-Difference</em> (TD) update with stepsize $\beta$:
+														</p>
+														<p>
+															$$
+															V(s) \leftarrow V(s) + \beta (T^\gamma V(s) - V(s))
+															$$
+														</p>
+													</div>
+													<div class="fragment">
+														<p align="left">
+															For a parametric approximation $V_w$ of $V$ with $w \in \mathcal W$ the update becomes
+														</p>
+														<p>
+															$$
+															\frac d{d t} w(t) = \mathbb E_{\mu} \left[D V_{w(t)}^\top(s)\, (T^\gamma V_{w(t)}(s) - V_{w(t)}(s)) \right]
+															$$
+														</p>
+
+													</div>
+													<!--	<p>
+															$$
+															 \frac d{d t} w(t) = \mathbb E_{\mu} \left[D V_{w(t)}(s) \left(\mathbb E_\pi \left[ R(s,a_0) + \gamma V_{w(t)}(s_1) \right] -	V_{w(t)}(s)\right) \right]
+															$$
+														</p>-->
+
+												</section>
+
+
+			<section>
+									<section>
+										<h2>Artificial neural networks: Value function</h2>
+										<div style="width: 1200px; ">
+											<div style="border: 0; width:670px;float:left;">
+										<p align="left">
+											We represent the neural network through
+										</p>
+										<p>
+											$$
+											\begin{align*}
+											V_{(\vartheta^{(i)})}(s) &= \frac 1 N \sum_{i = 1}^N \vartheta_0^{(i)} \sigma(s;\bar \vartheta^{(i)}) \end{align*}$$
+										</p>
+										<p align="left" class="fragment" data-fragment-index="1" >
+											For $\nu^{(N)}(\cdot) = \frac 1 N \sum_{i=1}^N \delta_{\vartheta^{(i)}}(\cdot)\in \mathcal M_+^1(\Theta)$
+										</p>
+												<p class="fragment" data-fragment-index="1">$$
+											\begin{align*}V_{\nu^{(N)}}(s)&= \int_{\Theta} \vartheta_0 \sigma(s;\bar \vartheta) \nu^{(N)}(d \vartheta)
+											\end{align*}$$
+										</p>
+
+											<p class="fragment" data-fragment-index="2" align="left">We consider the limit $N \to \infty$
+									</p>
+
+
+											</div>
+											<div  style="border: 0; width:505px;float:left;position:relative;"><p>$$\qquad (\vartheta_0^{(i)}, \bar \vartheta^{(i)}) = \vartheta^{(i)} \in \Theta \text{ (weights)}$$</p>
+													<img class="fragment fade-out" data-fragment-index="2" style="border: 0; width:450px; box-shadow: none; margin:0px 0px 30px 50px;padding=0px;position:relative" src="./figures/mf/ann1inV22.png" align="left" vertical-align="bottom">
+													<img class="fragment fade-in" data-fragment-index="2" style="border: 0; width:450px; box-shadow: none; margin:0px 0px 30px 50px;padding=0px;position:absolute;left:0px" src="./figures/mf/ann1inNV.png" align="left" vertical-align="bottom">
+											</div>
+										</div>
+										<p align='left' style="position: absolute; top: 680px; left: 0px;font-size:0.7em;" class="fragment fade-in" data-fragment-index="1">
+											(MeiMontanariNguyen18), (ChizatBach18),  (RotskoffVanDenEijnden18),  (NguyenPham20), (SirignanoSpiliopoulos18), (Wojtowytsch20), ...
+										</p>
+									</section>
+
+								</section>
+
+
+
+
+
+																							<section>
+																								<h2 style="margin-bottom: 30pt;">Mean-field PDE</h2>
+																								<!-- <p align="left">
+																									We express the approximator through $\nu^{(N)}(\cdot) = \frac 1 N \sum_{i=1}^N \delta_{\vartheta^{(i)}}(\cdot)\in \mathcal M_+^1(\Theta)$
+																								</p>
+																								<p>
+																									$$
+																									V_{\nu^{(N)}}(s) = \frac 1 N \sum_{i = 1}^N \vartheta_0^{(i)} \sigma(s;\bar \vartheta^{(i)}) = \int_{\Theta} \vartheta_0 \sigma(s;\bar \vartheta) \nu^{(N)}(d \vartheta)
+																									$$
+																								</p> -->
+																								<div class="fragment">
+																									<p align="left">
+																										We can write the set of Temporal Difference ODEs for the update of $\vartheta^{(i)}$
+																									</p>
+																									<p>
+																										$$
+																										\frac d{d t} \vartheta^{(i)}(t) = \mathbb E_{\mu}\left[ \nabla_{\vartheta^{(i)}} V_{(\vartheta^{(i)})(t)}(s)\, (T^\gamma V_{(\vartheta^{(i)})(t)}(s) - V_{(\vartheta^{(i)})(t)}(s))\right]
+																										$$
+																									</p>
+																									<p align="left">
+																										as a Vlasov PDE for the evolution of $\nu_t = \nu_t^{(N)}$:
+																									</p>
+
+
+																									<p>
+																										$$
+																										\frac {d}{d t} \nu_t(\vartheta) = \mathrm{div}\left(\nu_t(\vartheta)\,\, \mathbb E_\mu \left[ \nabla_\vartheta (\vartheta_0 \sigma(s;\bar \vartheta))\,\,(T^\gamma V_{\nu_t}(s) - V_{\nu_t}(s)) \right]\right)
+																										$$
+																									</p>
+																									<p align="left" style="font-size: 0.9em;">
+																										This PDE also evolves absolutely continuous measures, which model the training of wide neural networks:
+																									</p>
+																									<div class="fragment">
+																										<p align="left">
+																											<b>Proposition  (AA, Lu, 2021): </b> Let $\{\vartheta_t^{(i)}\}_{i=1}^N$ obey the Temporal Difference ODEs
+																											and $\nu_0^{(N)} \to \nu_0 \in \mathcal P_2(\Theta)$ as $N \to \infty$ then for every $t > 0$ we have $\nu_t^{(N)}\to \nu_t$ solving the above PDE.
+																										</p>
+
+																									</div>
+
+																								</div>
+																							</section>
+
+																								<!-- <section>
+																									<h2 style="margin-bottom: 30pt;">Mean-field regime: convergence</h2>
+																									<p align="left">
+																										With $
+																										V_{\nu}(\cdot) = \int_{\Theta} \vartheta_0 \sigma(\cdot;\bar \vartheta) \,\nu(d \vartheta)
+																										$ we write the evolution of $\nu$ as
+																									</p>
+																									<p>
+																										$$
+																										\frac {d}{d t} \nu_t(\vartheta) = \mathrm{div}\left(\nu_t(\vartheta)\,\, \mathbb E_\mu \left[ \nabla_\vartheta (\vartheta_0 \sigma(s;\bar \vartheta))\,\, (T^\gamma V_{\nu_t}(s) - V_{\nu_t}(s)) \right]\right)
+																										$$
+																									</p>
+																									<p align="left">
+																										This PDE also evolves absolutely continuous measures, which model the training of wide neural networks:
+																									</p>
+																									<div class="fragment">
+																										<p align="left">
+																											<b>Proposition 2 ($N \to \infty$ convergence): </b> Let $\{\vartheta_t^{(i)}\}_{i=1}^N$ obey the Temporal Difference ODEs
+																											and $\nu_0^{(N)} \to \nu_0 \in \mathcal P_2(\Theta)$ as $N \to \infty$ then for every $t > 0$ we have $\nu_t^{(N)}\to \nu_t$ solving the above PDE.
+																										</p>
+
+																									</div>
+
+
+																								</section> -->
+
+																							<!--	<section>
+																									<h2 style="margin-bottom: 30pt;">Proof of convergence</h2>
+
+																									<p align="left">
+																										The main argument for this proof Gronwall inequality. This results from uniform Lipschitz continuity of the PDE RHS</p>
+
+																									<p>
+																										$$
+																										\frac {d}{d t} \nu_t(\vartheta) = \mathrm{div}\left(\nu_t(\vartheta)\,\, \mathbb E_\mu \left[ \nabla_\vartheta (\vartheta_0 \sigma(s;\bar \vartheta))\,\, (T^\gamma V_{\nu_t}(s) - V_{\nu_t}(s)) \right]\right)
+																										$$
+																									</p>
+																									<p align="left"> along its trajectories. To show this, recalling the regularity of $\sigma$ we check:
+																									</p>
+																									<table>
+																										<tr>
+																											<td align="left"> \(\checkmark\) Lipschitz continuity of $V_\nu$</td>
+																										</tr>
+																										<tr>
+																											<td align="left"> \(\checkmark\) Boundedness of $\|T^\gamma V_{\nu_t}(s) - V_{\nu_t}(s)\|_\mu$ along trajectories, from:</td>
+																										</tr>
+																									</table>
+
+																									<p align="left"> <b>Lemma (BrandfonbrenerBruna19): </b><br> Fix $\nu_0$ with finite second moments, then $\|V_{\nu_t}\|_\mu< C$ for all $t>0$. </p>
+
+
+																								</section>-->
+
+
+
+
+
+
+
+
+																								<section>
+																									<h2 style="margin-bottom: 30pt;">Optimality of TD fixed points</h2>
+																									<p align="left">
+																										Consider the fixed point equation </p>
+																									<p>
+																										$$
+																										\begin{align*}
+																										0 &= \text{div}\left(\nu(\vartheta)\,\, \mathbb E_\mu \left[ \nabla_\vartheta (\vartheta_0 \sigma(s;\bar \vartheta))\,\, (T^\gamma V_{\nu}(s) - V_{\nu}(s)) \right]\right)\\
+																										& = \text{div} \left(\nu(\vartheta)\,\, \nabla_\vartheta \left[\theta_0 \int_{\mathcal S} \sigma(s;\bar \vartheta)\,\, (T^\gamma V_{\nu}(s) - V_{\nu}(s))\, \mu(d s)\right]\right) \\
+																										\end{align*}
+																										$$
+																									</p>
+																									<div class="fragment">
+																										<p align="left"> Suboptimal states with $T^\gamma V_{\nu}(s) \not \equiv V_{\nu}(s)$ can be fixed points if
+																										<ul align="left" style="font-size: 0.9em;  display: inline-block; text-align: left;">
+																											<li> $\sigma(\cdot; \bar \vartheta)$ and $(T^\gamma V_{\nu} - V_{\nu})$ are orthogonal in $L^2(\mathcal S, \mu)$ for all $\bar \vartheta\qquad\qquad$</li>
+																											<li> The measure $\nu(\vartheta)$ loses support (in $\bar \vartheta$)</li>
+																										</ul>
+																										</p>
+																									</div>
+
+																									<div class="fragment" style="border: 2px solid black;padding: 10px 10px 0px 10px;">
+																										<p align="left">
+																											<b>Theorem (AA, Lu, 2021):</b> Let $\text{span}(\sigma(\cdot;\bar \vartheta))$ be dense in $L^2( \mu)$,
+																											$\nu_0$ have full support in $\Theta$ and assume that $\nu_t$ converges
+																											to $\nu^*$ as $t\to \infty$,
+																											then $V_{\nu^*} = V_\pi^*$ $\mu$-a.e.
+																										</p>
+																									</div>
+
+																								</section>
+
+																								<section>
+																									<h2 style="margin-bottom: 30pt;">Reminder: Policy optimization</h2>
+
+																									<p align="left" > A <em>policy</em> $\pi~:~\mathcal S \to \mathcal M_+^1(\mathcal A)$  models the actions chosen by agent at state $s$</td>
+																					</p>
+																									<p align="left" class="fragment"> For each $\pi$ we have an effective kernel $P_\pi(s, ds') = \int P(s,a, d s') \pi(s,d a)$</p>
+
+
+															<!-- <div class="fragment" style="width:1200px">
+																									<p align="left" style="font-size: 0.9em;width:1200px;">
+																										<b>Objective:</b> fixing $\gamma \in (0,1)$, find a policy $\pi$ maximizing the expected future reward
+																									</p>
+																									<p>$$V_\pi^*(s) := \mathbb E_\pi\left[ \sum_{k=0}^\infty \gamma^k R(s_k,a_k)\,\Big|\,s_0 = s\right]\quad \mathrm{(value\,\, function)}$$ </p>
+
+
+																									<p align="left" style="font-size: 0.9em;">
+																										More generally, for $s_0 \sim \rho_0$ maximize $\mathcal E(\pi) = \mathbb E\left[ V_\pi^*(s)\,|\,s \sim \rho_0\right]$ </p>
+													</div> -->
+
+
+															<div class="fragment" style="width:1200px">
+																									<p align="left" style="font-size: 0.9em;width:1200px">
+																										<b>Objective:</b> fixing $\gamma \in (0,1)$, find a policy $\pi$ maximizing the expected future reward
+																									</p>
+																									<p>$$\mathcal E(\pi) := \mathbb E_\pi\left[ \sum_{k=0}^\infty \gamma^k R(s_k)\,\Big|\,s_0 \sim \rho_0\right]\quad \mathrm{(objective\,\, function)}$$ </p>
+
+																								</div>
+																									<p align="left" class="fragment"> We assume that  $R(s) = r(s) + \tau D_{KL}(\pi(s, \cdot)|\bar \pi(s, \cdot))$ and that $\mathcal E(\pi)$ is known</p>
+																								</section>
+
+
+								<section>
+									<h2>Artificial neural networks: Policy</h2>
+									<div style="width: 1200px; ">
+										<p align="left">
+											We express the approximator through $\nu^{(N)}(\cdot) = \frac 1 N \sum_{i=1}^N \delta_{\vartheta^{(i)}}(\cdot)\in \mathcal M_+^1(\Theta)$
+											$$
+											f_{\nu^{(N)}}(s,a) = \frac 1 N \sum_{i = 1}^N \vartheta_0^{(i)} \sigma(s,a;\bar \vartheta^{(i)}) = \int_{\Theta} \vartheta_0 \sigma(s,a;\bar \vartheta) \nu^{(N)}(d \vartheta)
+											$$
+										</p>
+										<div style="border: 0; width:670px;float:left;">
+											<p align="left" style="border-top: -100"> where $(\vartheta_0^{(i)}, \bar \vartheta^{(i)}) = \vartheta^{(i)} \in \Theta \text{ are weights}$</p>
+									<!-- <p align="left">
+										We represent the neural network through
+									</p>
+									<p>
+										$$
+										\begin{align*}
+										f_{(\vartheta^{(i)})}(s,a) &= \frac 1 N \sum_{i = 1}^N \vartheta_0^{(i)} \sigma(s,a;\bar \vartheta^{(i)}) \end{align*}$$
+									</p>
+									<p align="left" class="fragment" data-fragment-index="1" >
+										For $\nu^{(N)}(\cdot) = \frac 1 N \sum_{i=1}^N \delta_{\vartheta^{(i)}}(\cdot)\in \mathcal M_+^1(\Theta)$
+									</p>
+											<p class="fragment" data-fragment-index="1">$$
+										\begin{align*}f_{\nu^{(N)}}(s,a)&= \int_{\Theta} \vartheta_0 \sigma(s,a;\bar \vartheta) \nu^{(N)}(d \vartheta)
+										\end{align*}$$
+									</p> -->
+
+		<div class="fragment" data-fragment-index="4">
+									<p align="left">
+										We transform the output into a policy mapping $\mathcal S \to \mathcal M_+^{1}(\mathcal A)$ through softmax:
+									</p>
+									<p>
+										$$
+										\color{red}{\pi[f](s,a) :=  \frac{\exp \left[{f(s,a)}\right]}{\int_{\mathcal A} \exp\left[{f(s,a')}\right] d a'}}
+										$$
+									</p>
+								</div>
+										</div>
+										<div  style="border: 0; width:505px;float:left;position:relative;">
+												<img class="fragment fade-out" data-fragment-index="2" style="border: 0; width:450px; box-shadow: none; margin:0px 0px 30px 50px;padding=0px;position:relative" src="./figures/mf/ann1in.png" align="left" vertical-align="bottom">
+												<img class="fragment fade-in" data-fragment-index="2" style="border: 0; width:450px; box-shadow: none; margin:0px 0px 30px 50px;padding=0px;position:absolute;left:0px" src="./figures/mf/ann1inN.png" align="left" vertical-align="bottom">
+												<img class="fragment fade-in" data-fragment-index="4" style="border: 0; width:450px; box-shadow: none; margin:0px 0px 30px 50px;padding=0px;position:absolute;left:0px" src="./figures/mf/ann1inN2.png" align="left" vertical-align="bottom">
+										</div>
+									</div>
+								</section>
+			<section>
+				<section>
+					<h2>(Softmax) policy gradients</h2>
+					<p align="left">
+					Locally, we can optimize the performance of $\pi$ by evolving $\vartheta^{(i)}(t)$ as
+					</p>
+					<p>
+						$$
+						\frac{d}{dt} \vartheta^{(i)}(t) = \nabla_{\vartheta^{(i)}} \mathcal E(\pi[f_{(\vartheta^{(i)}(t))}])
+						$$
+					</p>
+					<p align="left">
+					Then, writing $\mathcal E(\nu):=\mathcal E(\pi[f_{\nu}]) $ the dynamics of  $\nu_t^{(N)} \to \nu_t$
+					<!-- where $\dot \vartheta^{(i)}(t) = v_{\nu_t}(\vartheta^{(i)})$  -->
+					obey
+					</p>
+					<p>
+						$$
+						\dot \nu_t =  \text{div}\left(\nu_t \nabla_\vartheta \left(\frac{\delta \mathcal E({\nu_t})}{\delta \nu_t}\right)\right)
+						$$
+					</p>
+					<div class="fragment">
+						<p align="left">
+						We have convergence to the continuum limit for large $N$:
+						</p>
+						<p align="left">
+							<b>Proposition (AA, Lu, 2021): </b><br>
+							Let $\{\vartheta_t^{(i)}\}_{i=1}^N$ obey the Softmax Policy Gradient ODEs
+							and $\nu_0^{(N)} \to \nu_0 \in \mathcal P_2(\Theta)$ as $N \to \infty$ then
+							for every $t > 0$ we have $\nu_t^{(N)}\to \nu_t$ solving the above PDE.
+						</p>
+			<!-- <p align="left" style="font-size:0.7em">(Agazzi, Lu, Global Optimality of softmax policy gradients in the mean-field regime, ICLR 2021)</p> -->
+			</div>
+					<!-- <p align="left">
+						Diversi algoritmi di apprendimento automatico risultano in diversi campi vettoriali:
+					</p>
+					<ul style="float:left;padding:0;margin:10pt;">
+							<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+							<b>Algoritmo temporal-difference</b><br>
+							(Descrizione algoritmo)
+							<li style="float:left;padding:5px;margin:0;font-size:0.9em">
+							<b>Algoritmo policy gradient</b> <br>
+							(Descrizione algoritmo)
+					</ul> -->
+				</section>
+
+
+
+									<!-- <section>
+										<h2 style="margin-bottom: 30pt;">SPG: convergence </h2>
+										<div style="width: 1200px;">
+											<div style="border: 0; width:600px;float:left;">
+										<p align="left">
+											Evolving absolutely continuous measures wth the mean-field SPG PDE
+										</p>
+										<p>
+											$$
+											\frac d{d t} \nu_t = \text{div}\left(\nu_t \nabla_\vartheta \frac{\delta \mathcal E(\nu_t)}{\delta \nu}\right)
+											$$
+										</p>
+										<p align="left">
+											approximates the behavior of wide ($N\to \infty$) neural networks:
+										</p>
+										<div class="fragment">
+											<p align="left">
+												<b>Proposition ($N \to \infty$ convergence): </b>
+												Let $\{\vartheta_t^{(i)}\}_{i=1}^N$ obey the Softmax Policy Gradient ODEs
+												and $\nu_0^{(N)} \to \nu_0 \in \mathcal P_2(\Theta)$ as $N \to \infty$ then
+												for every $t > 0$ we have $\nu_t^{(N)}\to \nu_t$ solving the above PDE.
+											</p>
+			</div>
+			</div>
+			<div class="fragment" style="border: 0; width:575px;float:left;"><br>
+				<p>MF convergence</p>
+										</div>
+
+								</div>
+									</section> -->
+										</section>
+			<section>
+									<section>
+										<!--data-transition="slide-in slide-out"-->
+										<h2 style=" width:100%; text-align:center; ">SPG: Optimality</h2>
+
+
+										<div style="width: 1200px; margin-top: 0px">
+											<div style="border: 0; width:600px;float:left;">
+												<p align="left">
+													The fixed points of the equation
+												</p>
+												<p>
+													$$
+													\frac d{d t} \nu_t = \text{div}\left(\nu_t \nabla_\vartheta \frac{\delta \mathcal E(\nu_t)}{\delta \nu}\right)
+													$$
+												</p>
+												<p align="left">
+													are optimal:
+												</p>
+
+												<div class="fragment"  style=" width:600px;float:left; border: 2px solid black;padding: 0px 10px 0px 10px;">
+													<p align="left">
+														<b>Theorem (AA, Lu, 2021):</b> <br>Assume that
+														$\nu_0$ has full support on $\Theta$, span$(\sigma(\cdot,\bar \theta)) = L^2(\mathcal S \times \mathcal A)$
+														<!--(, that $\text{span}(\sigma(\cdot;\bar \vartheta))$ is dense in $L^2(\mathcal S \times \mathcal A)$) -->
+														and that  $\nu_t$ converges to $\nu^*$ as $t\to \infty$,
+														then $\pi_{\nu^*} = \arg \max_{\pi} \mathcal E(\nu) $ a.e.
+													</p>
+												</div>
+											</div>
+											<div class="fragment" style="border: 0; width:575px;float:left;">
+												<img src="./figures/mf/simulation_pg_trans.png" align="right" vertical-align="top" style="border: 0; width:575px; box-shadow: none; ">
+											</div>
+										</div>
+									</section>
+
+
+
+
+
+
+
+
+
+
+
+															<!--	<section>
+																	<h2 style="margin-bottom: 30pt;">Proof of optimality</h2>
+
+																	<p align="left">
+																		The proof follows 3 main steps (ChizatBach18)
+																	</p>
+																	<table>
+																		<tr>
+																			<td align="left"> \(\checkmark\) In the neighborhood of a suboptimal fixed point ($T^\gamma V_\nu(s) \not \equiv V_\nu(s)$)
+																			</td>
+																		<tr>
+																		</tr>
+																		<td align="left">$$\begin{align*}
+																			F(\bar \vartheta) &= \mathbb E_\mu \left[ \nabla_\vartheta (\vartheta_0 \sigma(s;\bar \vartheta))\,\, (T^\gamma V_\nu(s) - V_\nu(s)) \right]_0 \\
+																			&= \mathbb E_\mu \left[  \sigma(s;\bar \vartheta)\,\, (T^\gamma V_\nu(s) - V_\nu(s)) \right]\end{align*}$$
+																		</td>
+																		<tr>
+																		</tr>
+																		<td align="left">
+																			$\,\,\,$is bounded away from $0$ for some $\bar \vartheta$.</td>
+																		</tr>
+																		<tr>
+																			<td align="left"> \(\bullet\) Because the vector field $\mathbb E_\mu \left[ \nabla_\vartheta (\vartheta_0 \sigma(s;\bar \vartheta))\,\, (T^\gamma V_\nu(s) - V_\nu(s)) \right]$ is <br>
+																				$\,\,\,$continuous in $\vartheta$, full support of
+																				$\nu_t$ in $\bar \vartheta$ is preserved for all $t>0$</td>
+																		</tr>
+																		<tr></tr>
+																		<tr>
+																			<td align="left">\(\bullet\) Assuming by contradiction the the dynamics to
+																				converge to a<br>
+																				$\,\,\,$suboptimal point ($\nu_t \to \nu^*$ with $(T^\gamma V_{\nu^*} - V_{\nu^*}) \neq 0$). Then the<br>
+																				$\,\,\,$asymptotycally constant vector field would drive a positive amount of
+																				$\,\,\,$mass to infinity contradicting the convergence assumption.</td>
+																		</tr>
+																	</table>
+
+
+																</section>-->
+
+
+<!--
+
+															<section>
+																<h2 style="">Numerical results</h2>
+
+																<div style="width: 950px; margin-top: 50px">
+																	<img src="./figures/mf/testtest_trans.png" align="left" vertical-align="bottom" style="border: 0; width:465px; box-shadow: none; ">
+																	<img src="./figures/mf/tdf_trans.png" align="right" vertical-align="bottom" style="border: 0; width:465px; box-shadow: none; ">
+																	<p>$\qquad\text{lazy} \qquad\qquad\qquad\qquad\qquad\text{mean-field}$</p>
+																</div>
+
+
+
+															</section> -->
+
+								</section>
+
+
+
+
+									<section>
+										<h2>Conclusions</h2>
+
+			<div class="fragment" >
+										<p align="left" style="margin-bottom:10px;font-size:0.9em">
+											Future research directions:
+										</p>
+										<ul style="float:left;padding:0;">
+											<li style="float:left;padding:5px;margin:0;font-size:0.8em">
+											<b>Convergence:</b> Prove convergence of limiting dynamics
+												<li style="float:left;padding:5px;margin:0;font-size:0.8em">
+												<b>Structure:</b> Extend results to <em>deep</em> and <em>recurrent</em> neural networks
+											<li style="float:left;padding:5px;margin:0;font-size:0.8em">
+												<b>Noise:</b> Analyze finite-timestep and finite-sample dynamics (stochastic)
+										<!-- <li style="float:left;padding:5px;margin:0;font-size:0.8em"> -->
+											<!-- <b>Fluctuations:</b> Prove simulataneous small-noise, large $N$ large deviations estimates for the training dynamics (in the supervised setting) -->
+									</ul>
+									<br><br>
+
+								</div>
+								<div class="fragment">
+								<p align="left" style="margin-bottom:5px;margin-top:100px">
+									Bibliography:
+								</p>
+								<ul style="float:left;padding:0;margin-bottom:30px">
+										<li style="float:left;padding-left:5px;margin:0;font-size:0.7em">
+										A. Agazzi, J. Lu. Temporal-difference learning with nonlinear function approximation: lazy training and mean field regimes, MSML 2021
+									<li style="float:left;padding:5px;margin:0;font-size:0.7em">	A. Agazzi, J. Lu. Global optimality of softmax policy gradients with single layer neural networks in the mean-field regime, ICLR 2021
+								</ul>
+							</div>
+							<div class="fragment">
+
+
+						</div>
+
+									</section>
+
+
+
+
+									<!-- <section>
+										<h2>Conclusioni</h2>
+										<p align="left">
+											Consider the reactions <big> \(\emptyset \overset{r_1}{\rightharpoonup} A + B \overset{r_2}{\rightharpoonup} 2B \overset{r_3}{\rightharpoonup} A\)</big>. We see sets of
+										</p>
+										<table>
+											<tr>
+												<td class="fragment" align="left"> \(\bullet\) Molecules \( \ \mathcal S = \{A,B\}\)</td>
+											</tr>
+											<tr>
+												<td class="fragment" align="left"> \(\bullet\) Reactions \( \ \mathcal R = \{r_1,r_2,r_3\}\)</td>
+											</tr>
+											<tr>
+												<td class="fragment" align="left">\(\bullet\) In/out combinations \( \mathcal C = \{(0,0),(1,1),(0,2),(1,0)\}\)</td>
+											</tr>
+										</table>
+
+
+
+									</section>
+			 -->
+
+
+
+
+	<!-- <section data-background="./figures/phd/nice.gif" data-background-color="#000000" data-background-size="contain" data-transition="slide-in fade-out">
+		<h2 style="position: absolute; top: -320px; left: 180px;">
+			Thank you
+		</h2>
+		<div>&nbsp;</div>
+	</section> -->
+
+
+		</div>
+	</div>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+<script src="plugin/chalkboard/plugin.js"></script>
+<script src="plugin/math/math.js"></script>
+
+	<script>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+
+			width: 1200,
+			height: 700,
+
+			viewDistance: 50,
+
+
+			history: true,
+			 // transition: 'none',
+			backgroundTransition: 'none',
+			// Enables touch navigation on devices with touch input
+			touch: true,
+			//
+			// // Hide cursor if inactive
+			// hideInactiveCursor: true,
+			//
+			// // Time before the cursor is hidden (in ms)
+			// hideCursorTime: 5000
+
+			hash: true,
+			dependencies: [
+					// ...
+					{ src: 'plugin/handwriting/handwriting.js' },
+
+					// ...
+
+
+											{
+													src: 'plugin/mouse-pointer/mouse-pointer.js',
+													async: false
+												},
+				],
+
+
+								math: {
+									// mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+									config: 'TeX-AMS_HTML-full',
+								},
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealChalkboard ,RevealMath]
+		});
+	</script>
+</body>
+</html>
