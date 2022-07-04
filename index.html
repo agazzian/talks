@@ -9,601 +9,681 @@
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
 		<link rel="stylesheet" href="dist/theme/serif.css">
-
-		<!-- <link rel="stylesheet" href="plugin/highlight/monokai.css"> -->
-
-
-
-		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
-
-
 		<link rel="stylesheet" href="dist/theme/brown.css">
 
-<!-- Theme used for syntax highlighted code -->
-</head>
 
-<body {font-size: 0.9em;}>
-	<div class="reveal">
-		<div class="slides">
-			<section>
-				<h2 style="font-size: 1.8em;margin-bottom:2cm;">$\,$ <br>Weakly reversible chemical reaction networks are recurrent in 2d</h2>
-				<h3 style="margin-bottom:0.5cm;">
-					<font size=15pt>Andrea Agazzi</font>
-				</h3>
-				<img style="margin-bottom:1cm;; border: 0; width:300px; box-shadow: none;" src="./figures/crc/logo_unipi.png" alt="UNIGE">
-				<h5>Eck.fest, 10.06.2022</h5>
-				<p>Joint work with J. C. Mattingly, D. Cappelletti, D. Anderson</p>
-			</section>
-
-			<section>
-				<h2 style="font-size: 1.8em;margin-bottom:2cm;">A  partially Eckmannized proof that <br>Weakly reversible chemical reaction networks are recurrent in 2d</h2>
-				<h3 style="margin-bottom:0.5cm;">
-					<font size=15pt>Andrea Agazzi</font>
-				</h3>
-				<img style="margin-bottom:1cm;; border: 0; width:300px; box-shadow: none;" src="./figures/crc/logo_unipi.png" alt="UNIGE">
-				<h5>Eck.fest, 10.06.2022</h5>
-				<p>Joint work with J. C. Mattingly, D. Cappelletti, D. Anderson</p>
-
-			</section>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
 
-			<section>
-				<h2>Chemical Reaction Networks</h2>
-				<p align="left">
-					Consider the reactions <big> \(\emptyset \overset{r_1}{\rightharpoonup} A + B \overset{r_2}{\rightharpoonup} 2B \overset{r_3}{\rightharpoonup} \emptyset\)</big>. We see sets of
-				</p>
-				<div>
-					<ul style="font-size:0.9em;" align="left">
-						<li class="fragment" align="left" style="font-size:0.9em;">  Molecules \( \ \mathcal S = \{A,B\}\qquad\qquad\qquad \qquad \qquad \qquad \qquad \qquad\quad\)
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2 style="font-size: 1.8em;margin-bottom:2cm;">Random splitting of fluid models</h2>
+					<h3 style="margin-bottom:1cm;"> <font size=15pt>A. Agazzi, J. Mattingly, O. Melikechi</font></h3>
+					<img style="margin-bottom:1cm;; border: 0; width:300px; box-shadow: none;" src="./figures/crc/logo_unipi.png" alt="UNIPI">
+					<h5>Risorgimento della vita felice, ETHZ, 05.07.2022</h5>
+				</section>
 
-						<li class="fragment" align="left"> Reactions \( \ \mathcal R = \{r_1,r_2,r_3\}\)
-
-						<li class="fragment" align="left"> In/out combinations \( \mathcal C = \{(0,0),(1,1),(0,2)\}\qquad\qquad\)
-					</ul>
-				</div>
-
-				<p align="left" class="fragment">
-					A chemical reaction network \((\mathcal S, \mathcal C, \mathcal R)\) is defined by the sets
-				</p>
-
-				<div class="fragment">
-					<ul style="font-size:0.9em;" align="left">
-						<li>\( \ \mathcal S := \{s_1, s_2,\dots, s_d\}\) of chemical species,
-
-						<li>\( \ \mathcal R := \{r_1, r_2,\dots, r_m\}\) of chemical reactions,
-
-						<li>\(\ \mathcal C := \bigcup_{r \in \mathcal R} \{c_{\rm in}^r, c_{\rm out}^r\}\) of reaction complexes.$\qquad \qquad \qquad \quad$
-					</ul>
-				</div>
-			</section>
-
-
-			<section>
-				<h2>
-					Structural conditions
-				</h2>
-
-				<div style="float:left; width:650px;">
-
-					<p align="left">
-						Can we find a convenient structural representation of the network allowing us to infer some of its dynamical properties?
-					</p>
-					<p align="left" class="fragment" data-fragment-index="1">
-						Consider for example the system <br> \(\emptyset\quad \,\,\rightharpoonup A+B \rightharpoonup \,\,\,2B \,\,\,\rightharpoonup \emptyset~.\)<br>
-						$(0,0)\rightharpoonup (1,1)\,\rightharpoonup\,(0,2) \rightharpoonup (0,0)$
-					</p>
-					<p align="left" class="fragment" data-fragment-index="1">
-						<font color="red">Is this network "asymptotically stable"?</font>
-					</p>
-				</div>
-				<div style="width: 400px; float:right;" class="fragment" data-fragment-index="2">
-					<img src="./figures/phd/w6.png" vertical-align="top" style="border: 0; width:450px; box-shadow: none; " />
-				</div>
-			</section>
-
-
-
-			<section>
-				<h2 style="margin-bottom: 30px;">Microscopic Markov model</h2>
-				<p align="left" style="font-size:0.9em">
-					With \(N_t \in \mathbb N_0^d\) counting the molecules of each species in a reactor we model the dynamics of the system through a pure jump Markov
-					model.
-				</p>
-				<div class="fragment" data-fragment-index="1" style="float:left; width: 1200px;">
-					<p align="left" class="fragment" data-fragment-index="1" style="font-size:0.9em">Each reaction \(r\) is a jump by \(c^r := c_{\rm out}^r - c_{\rm in}^r\) and occurs at a rate \( \Lambda_{r}\)
-						<font class="fragment" data-fragment-index="1"> where </font>
+				<section>
+					<h2 style="margin-bottom: 30pt;">Lorenz 96</h2>
+				 <p align="left" >
+						A toy model for numerical weather prediction (Lorentz, '96):
 					</p>
 					<p>
-						$$\Lambda_r(n):= k_r \prod_{i = 1}^d\binom{n_i}{(c_{\rm in}^r)_i}(c_{\rm in}^r)_i! = k_r \prod_{i = 1}^d n_i^{(c_{\rm in}^r)_i}(1 + o_n(1))$$</p>
+				$$
+					\frac d{dt} x_{k}(t) = x_{k-1}(t) (x_{k+1}(t) - x_{k-2}(t)) \color{red}{- x_{k}(t) + F}\qquad \text{for } k \in \{1,\dots, n\}\label{e:alg}
+				$$
+					</p>
+					<p align="left" >
+						where $x_{-1} = x_{n-1}$, $x_0 = x_n$ and $x_{n+1} = x_{1}$
+					</p>
+<div style="width: 690px;    float:left;">
+					<p align="left">
+					The conservative dynamics leave the energy $\|x\|_2^2$ invariant (verify: $\dot x \cdot x = 0$).
 					</p>
 
+					<p align="left" >
+						This model is known to display bifurcations as $F$ increases.
+					</p>
 				</div>
-				<div class="fragment" data-fragment-index="2" style="width: 1200px; float:left;">
-					<p align="left" style="font-size:0.85em; color:blue;">Ex: $A +B \to 2B$ is a jump of $(0,2)- (1,1) = (-1,1)$ at rate $
-						\Lambda(n) = k \cdot n_A \cdot n_B
-						$</p>
+				<div style="width: 370px;    float:left;">
+					<img  style="border: 0; margin-top:-60px; width:274px; box-shadow: none;" src="./figures/fluids/circle2.png" alt="UNIGE">
 				</div>
-				<div class="fragment" data-fragment-index="2" style="width: 1200px; float:left;">
-					<p align="left">Generator of $N_t$: $\mathcal L f(n) := \sum_{r \in \mathcal R} \Lambda_{r} (n) \left(f(n + c^r) -f(n)\right)$</p>
+
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">2d Navier-Stokes</h2>
+
+					<p align="left" >
+						Navier Stokes equs modeling the evolution of the velocity field $u=u(x,t)$
+					</p>
+					<p>
+				$$
+						\begin{cases}
+						\partial_t u + (u \cdot \nabla) u = \color{red}{\nu \Delta u} - \nabla p \color{red}{+ F}\\
+						\mathrm{div}(u) = \nabla\cdot u = 0
+						\end{cases}
+			  $$
+					</p>
+					<p align="left" >
+						for $x \in [0,2\pi]^2$, where $\nu>0$ controls dissipaton and $p$ is the pressure
+					</p>
+
+					<p align="left" >
+						The evolution of the <em>vorticity</em> $q=q(x,t):=\mathrm{curl}(u)$ reads
+					</p>
+					<p>
+						\begin{align}
+						\partial_t q + (\mathcal K q \cdot \nabla) q = \color{red}{\nu \Delta q + f}
+						\end{align}
+					</p>
+					<p align="left" >
+			where $\mathcal K$ is the Biot-Savart kernel
+					</p>
+				</section>
+
+				<!-- \qquad \int_{ [0,2\pi]^2} q(x,t) \,dx = 0 -->
+
+
+				<section>
+					<h2 style="margin-bottom: 20pt;">Random forcing</h2>
+
+					<p align="left" >
+						Stochastically forced versions of such systems were extensively studied:
+					</p>
+					<p>
+						$$
+						\frac d{dt} x_{k}(t) = x_{k-1}(t) (x_{k+1}(t) - x_{k-2}(t)) \color{red}{- x_{k}(t) + F} \color{blue}{+ \dot W_k}
+						$$
+					</p>
+					<p>
+				$$
+				\begin{align}
+				\partial_t q(x,t) + (\mathcal K q(x,t) \cdot \nabla) q(x,t) = \color{red}{\nu \Delta q(x,t) + f(x)} \color{blue}{+ \sum_k \sigma_k(x)~ \dot W_k}
+				\end{align}
+		$$
+					</p>
+					<p align="left" style="font-size:0.8em;margin-top:-10px" >
+						[Flandoli<em> et al. </em>95+...], [MattinglyE00], [FlandoliRomito02+08+...], [Romito04+08+...], [MattinglyPardoux05],  [HairerMattingly06+08+...], [DebusscheRomito14], ...
+					</p>
+
+					<p align="left" >
+						The "effect" of noise in these analyses is multifold: it acts both on
+					</p>
+<ul style="font-size:0.9em">
+	<li class="fragment">the conservative dynamics of the system (regularization, smoothing, ...)</li>
+	<li class="fragment">the forced/dissipative dynamics of the system (energy exchange)</li>
+</ul>
+
+
+
+				</section>
+
+
+
+
+
+
+				<section>
+					<h2 style="margin-bottom: 30pt;"> Split dynamics</h2>
+					<p align="left" >
+						We can decompose a vector field as
+				$
+				V(x) = \sum_{k=1}^n V_k(x)
+				$
+					</p>
+					<p align="left"  >
+and approximately recover the flow map $\varphi$ solving $\dot \varphi_t(x) = V(\varphi_t(x))$ combining the flow maps $\varphi_.^{(k)}$ of $V_k$:	for small $h$ we expect that		</p>
+<div style="position:absolute; left: 300px; margin-top:-20px" class="fragment fade-out" data-fragment-index="1">
+					<p>
+				$$
+				 \varphi_{ h}(x) \approx \varphi_{h}^{(n)}\circ\dots \circ \varphi_{h}^{(1)}(x)
+				$$
+					</p>
 				</div>
+				<div class="fragment fade-in" data-fragment-index="1">
+									<p>
+								$$
+								 \varphi_{t}(x) \approx \left(\varphi_{h}^{(n)}\circ\dots \circ \varphi_{h}^{(1)}\right)^m(x) \quad \text{for } t=mh
+								$$
+									</p>
+								</div>
+					<div style="border: 3px solid green;padding: 0px 10px 0px 10px;" class="fragment">
+					<p align="left" >
+						We add randomness by randomizing the flow times: for $\tau_i \stackrel{iid}{\sim} \text{Exp}(h)$
+$$
+\Phi_{\tau}(x) := \varphi_{\tau_n}^{(n)}\circ\dots \circ \varphi_{\tau_1}^{(1)} [\color{red}{\circ \varphi_{\tau_0}^{(0)}}](x) \approx \varphi_{nh}(x)
+$$
+where $\tau \in \mathbb R^n$ is a random vector throughout
+</p>
+</div>
+
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Lorenz 96 dynamics</h2>
+					<p align="left" >
+We can split the Lorenz 96 dynamics (for $k \in \{1,\dots, N\}$)
+					</p>
+			<p>
+					$$
+					\begin{align*}
+					\dot x_{k}(t) &= \color{green}{x_{k-1}(t)}~ ( \color{green}{x_{k+1}(t)} - x_{k-2}(t)) \,\color{red}{- x_{k}(t) + F}\\
+					\dot x_{k+1}(t) &=  \color{green}{x_{k}(t)} \quad(x_{k+2}(t)  \color{green}{- x_{k-1}(t)}) \,\color{red}{- x_{k+1}(t) + F}
+					\end{align*}
+				$$
+				</p>
+				<div style="width: 670px;    float:left;" align="left">
+			<p align="left">
+			by defining the vector fields
+		</p>
+    <p>
+						$$
+						\begin{align*}
+						& \color{green}{V_k(x) = x_{k-1} (x_{k+1}e_k - x_{k}e_{k+1})}\qquad \\ &\color{red}{V_0(x) =- x + F}
+						\end{align*}
+					$$
+</p>
+<p align="left">
+These dynamics conserve the energy $\|x\|_2^2$ (verify: $\dot x \cdot x = 0$).
+</p>
+</div>
+<div style="width: 370px;    float:left;" align="right" >
+<img  style="border: 0; width:374px; box-shadow: none;" src="./figures/fluids/sphere.png" alt="UNIGE">
+</div>
+
+
+				</section>
+
+
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Galerkin Navier Stokes dynamics</h2>
+	<p align="left">
+					 For $j \in \mathbb Z^2$ the (complex) Fourier modes $q_j = a_j + i b_j \in \mathbb C$ interact in triples $j,k,\ell \in \mathbb Z^2$ satisfying $j+k+\ell = 0$ according to
+										</p>
+										<div class="fragment">
+								<p style="font-size: 0.65em;">
+										$$
+										\begin{align*}{\large V_{jk\ell}^{(1-4)}~:}\quad
+											\begin{cases}
+												\dot{a}_j = C_{k\ell}a_ka_\ell \\
+												\dot{a}_k = C_{j\ell}a_ja_\ell \\
+												\dot{a}_\ell = -C_{jk}a_ja_k
+											\end{cases}\quad
+											\begin{cases}
+												\dot{a}_j = C_{k\ell}b_kb_\ell \\
+												\dot{b}_k = C_{j\ell}a_jb_\ell \\
+												\dot{b}_\ell = -C_{jk}a_jb_k
+											\end{cases}\quad
+											\begin{cases}
+												\dot{b}_j = C_{k\ell}a_kb_\ell \\
+												\dot{a}_k = C_{j\ell}b_jb_\ell \\
+												\dot{b}_\ell = -C_{jk}b_ja_k
+											\end{cases}\quad
+											\begin{cases}
+												\dot{b}_j = -C_{k\ell}b_ka_\ell \\
+												\dot{b}_k = -C_{j\ell}b_ja_\ell \\
+												\dot{a}_\ell = C_{jk}b_jb_k.
+											\end{cases}\qquad
+										\end{align*}
+									$$
+								</p>
+									<p align="left">
+									where $ C_{jk} = \frac{\langle j^\perp, k\rangle}{4 \pi} \left(\frac 1 {|k|^2}-\frac 1 {|j|^2}\right)$
+								</p>
+
+
+
+								<p align="left">The dynamics conserve the enstrophy
+	  $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2$ $\qquad \qquad \qquad \quad $ and the energy $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+		<p align="left" class="fragment">
+		Galerkin (UV cutoff): truncate to modes with $\sup\{ |j_1|,|j_2|\}\leq N$
+	</p>
+</div>
+
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Galerkin Navier Stokes dynamics</h2>
+
+										<p align="left" >
+										Galerkin: truncate to modes with $\sup\{ |j_1|,|j_2|\}\leq N$
+									</p>
+										<img  style="border: 0; width:400px; box-shadow: none;" src="./figures/fluids/gridblack.png" alt="UNIGE">
+			<br>
+			<br>
+
+
+				</section>
+				<section>
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Galerkin Navier Stokes dynamics</h2>
+
+										<p align="left" >
+										Galerkin: truncate to modes with $\sup\{ |j_1|,|j_2|\}\leq N$
+									</p>
+										<img  style="border: 0; width:400px; box-shadow: none;" src="./figures/fluids/gridblack2.png" alt="UNIGE">
+										<p align="left" style="margin-top:-30px">
+														 For $j \in \mathbb Z^2$  triples $j,k,\ell \in \mathbb Z^2$ interact if $j+k+\ell = 0$
+																			</p>
+
+
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Galerkin Navier Stokes dynamics</h2>
+
+										<p align="left" >
+										Galerkin: truncate to modes with $\sup\{ |j_1|,|j_2|\}\leq N$
+									</p>
+										<img  style="border: 0; width:400px; box-shadow: none;" src="./figures/fluids/gridblack3.png" alt="UNIGE">
+										<p align="left" style="margin-top:-30px">
+														 For $j \in \mathbb Z^2$  triples $j,k,\ell \in \mathbb Z^2$ interact if $j+k+\ell = 0$
+																			</p>
+
+
+				</section>
 			</section>
 
 
 
+				<section>
+					<h2 style="margin-bottom: 30pt;">Split Galerkin Navier Stokes dynamics</h2>
+	<p align="left">
+					 For each triple $j,k,\ell \in \mathbb Z^2$ satisfying $j+k+\ell = 0$ the vector fields
+										</p>
+								<p style="font-size: 0.7em;">
+									$$
+									\begin{align*}
+										\begin{cases}
+											\dot{a}_j = C_{k\ell}a_ka_\ell \\
+											\dot{a}_k = C_{j\ell}a_ja_\ell \\
+											\dot{a}_\ell = -C_{jk}a_ja_k
+										\end{cases}\quad
+										\begin{cases}
+											\dot{a}_j = C_{k\ell}b_kb_\ell \\
+											\dot{b}_k = C_{j\ell}a_jb_\ell \\
+											\dot{b}_\ell = -C_{jk}a_jb_k
+										\end{cases}\quad
+										\begin{cases}
+											\dot{b}_j = C_{k\ell}a_kb_\ell \\
+											\dot{a}_k = C_{j\ell}b_jb_\ell \\
+											\dot{b}_\ell = -C_{jk}b_ja_k
+										\end{cases}\quad
+										\begin{cases}
+											\dot{b}_j = -C_{k\ell}b_ka_\ell \\
+											\dot{b}_k = -C_{j\ell}b_ja_\ell \\
+											\dot{a}_\ell = C_{jk}b_jb_k.
+										\end{cases}\qquad
+									\end{align*}
+								$$
+								</p>
+
+									<!-- <p>
+											$$
+											 \Gamma_0(x,\xi, Q_t ) :=  \omega Q_t \xi  -  x \left( \omega Q_t^2  + \frac {1} 2  (1 + \omega Q_t^2)\right)
+										$$
+									</p> -->
+									<p align="left">conserve the enstrophy and the energy
+		  $\mathcal E_0(q) = \|q\|_2^2$, 	  $\mathcal E_1(q) = \|q\|_{-1}^2$</p>
+
+			<img  style="border: 0; width:600px; box-shadow: none;" src="./figures/fluids/ellipse.png" alt="UNIGE">
+
+
+				</section>
 
 
 
+				<section>
+					<h2 style="margin-bottom: 30pt;">Convergence results</h2>
 
-
-
-
-			<section>
-				<h2>Weakly reversible CRNs</h2>
-				<div style="padding: 10px 10px 0px 10px;">
-					<p align="left"><b>Definition:</b>
-						A chemical reaction network $(\mathcal S, \mathcal C, \mathcal R)$ is called <em>weakly reversible</em> if, when interpreted as a reaction graph (complexes are nodes and reactions are directed edges), all its connected components are strongly connected.
-					</p>
-				</div>
-				<div style="width: 500px; float:left;" class="fragment" data-fragment-index="2">
-					<img src="./figures/phd/w6.png" vertical-align="top" style="border: 0; height:300px; box-shadow: none; " />
-				</div>
-				<div style="width: 500px; float:left;" class="fragment" data-fragment-index="3">
-					<img src="./figures/phd/w7.png" vertical-align="top" style="border: 0; height:300px; box-shadow: none; " />
-				</div>
-			</section>
-
-
-			<section>
-				<h2>The main result</h2>
-				<div style="border: 2px solid black;padding: 10px 10px 0px 10px;">
-					<p align="left"><b>Theorem (A., Anderson, Cappelletti, Mattingly, 2022+):</b></p>
 					<p align="left">
-						Let $(\mathcal S, \mathcal C, \mathcal R)$ be a weakly reversible chemical reaction network and let $d = 2$, then $N_t$ is positive recurrent for any choice of positive rate constants $\{k_r\}_{r \in \mathcal R}$.
+									 Let $S_t g(x) := g(\varphi_t(x))$, $\widetilde S_h g(x) := g(\Phi_\tau(x))$ and  $P_h g := \mathbb E[\widetilde S_h g]$  then
+														</p>
 
-					</p>
-				</div>
-			</section>
-
-			<section>
-				<h2>Foster-Lyapunov estimates</h2>
-
-					<!-- <div>
-						<p align="left">Generator for $v = 1$:  $\quad \mathcal L_1 f(x) := \sum_{r \in \mathcal R} \Lambda_r^{(1)} (x) \left(f(x + c^r) -f(x)\right) $</p>
-					</div> -->
-					<div>
+<div style="border: 2px solid black;padding: 10px 10px 0px 10px;">
+					<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2022):</h3>
 					<p align="left">
-						<em>Sufficient condition for recurrence</em>: there exists Lyapunov function $V(\,\cdot\,) > 1$ and a compact $\mathcal K \subseteq \mathbb N_0^d$ with
-					</p><p>
-						$$\mathcal L V(n) < -1 \quad \text{for all } n \not \in \mathcal K$$
-					</p>
-					<p align="left">
-						We proceed to establish an analogous estimate a) <em>in the bulk</em> and b)  <em>on the boundary</em> of the state space separately.
+						Let $\Phi_\tau$ be the random flow map for either Lorenz 96 or galerkin Navier stokes dynamics. For any $t>0$ there exits $C>0$ such that, for $t=m h$
+						$$\|S_t - P_h^m \|_{2 \to 0}< C h $$
+						the trajectories of $\Phi_\tau^m(x)$ converge almost surely to the ones of $\varphi_t(x)$:
+						$$\mathbb P[\limsup_{h\to 0} \|S_t - \widetilde S_{h}^{m}\|_{2 \to 0}> \epsilon] = 0$$
 					</p>
 				</div>
 
-</section>
+					<p align="left" style="font-size: 0.6em;">
+					The operator norm is defined as $\|P\|_{2 \to 0}:=\sup_{g~:~\|g\|_2 = 1} \|P g\|_0$
+				</p>
+				<!-- and $\widetilde S_\tau^{M} g(x) := g(\Phi_\tau^{M}(x))$ -->
+				</section>
+
+
+											<section data-transition="fade-in slide-out">
+												<p style="position: relative;">Simulation</p>
+
+															<div style="width: 1070px;" >
+																<video data-autoplay src="./figures/fluids/gaussians_LogEModes.mp4"></video>
+															</div>
+				<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+														</section>
+
+														<section data-transition="fade-in slide-out">
+															<p style="position: relative;">Simulation</p>
+
+																		<div style="width: 1070px;" >
+																			<video data-autoplay src="./figures/fluids/gaussians_LogLogEModes.mp4"></video>
+																		</div>
+				<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+																	</section>
+
+																	<section data-transition="fade-in slide-out">
+																		<p style="position: relative;">Simulation</p>
+
+																					<div style="width: 1070px;" >
+																						<video data-autoplay src="./figures/fluids/vortexPair_LogEModes.mp4"></video>
+																					</div>
+																					<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+																					<!-- = \sum_{j=1}^{(2N+1)^2-1} a_j^2+b_j^2
+													=\sum_{j=1}^{(2N+1)^2-1} \frac{a_j^2+b_j^2}{|j|^2} -->
+																				</section>
+
+																	<section data-transition="fade-in slide-out">
+																		<p style="position: relative;">Simulation</p>
+
+																					<div style="width: 1070px;" >
+																						<video data-autoplay src="./figures/fluids/vortexPair_LogLogEModes.mp4"></video>
+																					</div>
+													<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+																				</section>
+
+
+
+								<section>
+									<h2 style="margin-bottom: 30pt;">Convergence: Sketch of proof</h2>
+					<p align="left">
+Let $\tau_i \sim \mathrm{Exp}(1)$, and recall that 					$\widetilde{S}_{h\tau}g(x)		= g(\Phi_{h\tau}(x))	$, then we have						</p>
+												<p style="font-size:0.8em;">
+														$$
+														\begin{align*}
+																\partial_h\widetilde{S}_{h\tau} &=\sum_{k=1}^n \tau_k e^{h\tau_1V_1}\cdots e^{h\tau_{k-1}V_{k-1}}V_k e^{h\tau_kV_k}\cdots e^{h\tau_nV_n}\\
+																& = \sum_{k=1}^n \tau_kV_k\widetilde{S}_{h\tau}+\sum_{k=1}^n \tau_k[\widetilde{S}^{(1,k-1)}_{h\tau}, V_k]\widetilde{S}^{(k,n)}_{h\tau}= V\widetilde{S}_{h\tau}+(V_\tau-V)\widetilde{S}_{h\tau}+E_{h\tau}
+														\end{align*}													$$
+													</p>
+													<p align="left">
+by variation of constants then we have
+</p>
+<p style="font-size:0.8em;">
+															$$
+															\begin{align}
+																\widetilde{S}_{h\tau}-S_h = \int_0^h S_{h-r}(V_\tau-V)\widetilde{S}_{r\tau} dr+\int_0^hS_{h-r}E_{r\tau} dr.
+															\end{align}														$$
+													</p>
+													<div class="fragment">
+													<p align="left">
+													both remainders have order $\mathcal O(h^2)$, so $\|P_{h}-S_{h}\|_{2\to 0} \sim \mathcal O(h^2)$
+												</p>
+											</div>
+								</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Ergodicity: Lorenz 96 </h2>
+
+					<p align="left">
+Let $\mathcal H = \{x \in \mathcal R^{n}~:~\sum_{k=1}^n (x_{k-1}^2+x_{k+1}^2)x_k^2\neq 0\}$					</p>
+
+<div style="border: 2px solid black;padding: 10px 10px 0px 10px;margin-bottom:10px;">
+
+					<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2022):</h3>
+					<p align="left">
+						For the <em>conservative</em> Lorenz 96 randomly split dynamics ($V_1, \dots, V_n$), Lebesgue measure is the unique invariant measure for $P_h$ on $\mathcal H\cap \mathcal S^{n-1}$.
+					</p>
+</div>
+					<div style="border: 2px solid black;padding: 10px 10px 0px 10px;">
+
+					<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2022):</h3>
+					<p align="left">
+						For the <em>forced/dissipative</em>  randomly split Lorenz 96  ($\color{red}{V_0},V_1, \dots, V_n$), let the fixed point of $V_0$ satisfy $x^*=F/\nu\not \in \mathcal H$. Then $P_h$ has a unique invariant measure $\mu$ to which the system converges exponentially fast in a weighted total varation norm.
+					</p>
+				</div>
+				</section>
 
 <section>
-	<h2>The bulk, aka deterministic regime</h2>
 
-		<!-- <div>
-			<p align="left">Generator for $v = 1$:  $\quad \mathcal L_1 f(x) := \sum_{r \in \mathcal R} \Lambda_r^{(1)} (x) \left(f(x + c^r) -f(x)\right) $</p>
-		</div> -->
-		<div>
-		<p align="left">
-			In the bulk, i.e., when $n_A, n_B \gg 1$, we approximate to leading order
-		</p>
-			<p>
-								$$\Lambda_r(x):= k_r \prod_{i = 1}^d\binom{x_i}{(c_{\rm in}^r)_i}(c_{\rm in}^r)_i! \approx k_r \prod_{i = 1}^d x_i^{(c_{\rm in}^r)_i}=: \lambda_r(x)$$</p>
-							</p>
-		<p align="left">
-			and approximating the difference term by a derivative we obtain
-		</p>
-		<p>
-							$$\mathcal L V(x) = \sum_{r \in \mathcal R} \Lambda_{r} (x) \left(V(x + c^r) -V(x)\right) \approx \sum_{r \in \mathcal R} \lambda_r(x) c^r \cdot \nabla V(x)$$</p>
-						</p>
-	</div>
+	<section>
+				<section>
+					<h2 style="margin-bottom: 30pt;">Ergodicity: Galerkin Navier Stokes</h2>
 
-</section>
+					<p align="left">
+Let $\mathcal H = \{x \in \mathbb R^{n}~:~\exists \tau \in \mathbb R_+^{n},~\mathrm{supp}(\Phi_\tau(x))=\{1,\dots, n\}\}$					</p>
 
+<div style="border: 2px solid black;padding: 10px 10px 0px 10px;margin-bottom:10px;">
 
+					<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2022):</h3>
+					<p align="left">
+						For the Euler randomly split dynamics ($V_1, \dots, V_n$), there exists at most one invariant measure for $P_h$ on $\mathcal H \cap \{q~:~\mathcal E_0(q) = \mathcal E_0, \mathcal E_1(q) = \mathcal E_1\}$.
+					</p>
+</div>
 
-			<section>
-				<h2>A useful parametrization of $\mathbb R_+^d$</h2>
-				<p align="left">Consider the change of coordinates $ x_i = e^{\rho w_i}\;\text{with} \; (w,\rho) \in S^{d-1} \times \mathbb R_{\geq 0}$
-					<br>$\quad$<br>$\quad$<br>
-				</p>
-				<div style="width: 1000px; position:absolute;bottom:250px;right:100px;">
-					<img src="./figures/phd/complex.png" align="left" vertical-align="bottom" style="border: 0; width:280px; box-shadow: none; ">
-					<img src="./figures/phd/concentration.png" align="right" vertical-align="bottom" style="border: 0; width:280px; box-shadow: none; ">
+					<div style="border: 2px solid black;padding: 10px 10px 0px 10px;">
+
+					<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2022):</h3>
+					<p align="left">
+						For the randomly split Galerkin Navier Stokes  ($\color{red}{V_0},V_1, \dots, V_n$), let the fixed point of $\color{red}{V_0}$ satisfy a weak bracket (or Hörmander) conditon. Then $P_h$ has a unique invariant measure $\mu$ to which the system converges exponentially fast in a weighted total varation norm.
+					</p>
 				</div>
-				<p><br>$\quad$<br>$ \to$</p>
-				<div class="fragment" data-fragment-index="1" vertical-align="bottom">
+				</section>
 
-				</div>
-				<p><br><br></p>
-				<p align="left" class="fragment" data-fragment-index="1">$\text{Then } \lambda_r(e^{\rho w}) =k_r \prod_{i = 1}^d (e^{\rho w_i})^{(c_{\rm in}^r)_i} = k_r e^{\rho \sum_{i = 1}^d w_i (c_{\rm in}^r)_i } = k_r e^{\rho \langle w, c_{\rm
-					in}^r\rangle}$</p>
-				<p align="left" class="fragment" data-fragment-index="2">$$\Rightarrow \Big[\frac{\rm d}{{\rm d} t} x\Big]_{x_i = e^{\rho w_i}} = \sum_{r \in \mathcal R} \lambda_r(e^{\rho w}) c^r = \sum_{r \in \mathcal R} k_r e^{\rho \langle w, c_{\rm
-					in}^r\rangle} c^r$$</p>
-			</section>
-
-			<section>
-												<section data-background="./figures/phd/change_of_coords2.png" data-background-size="47%" data-transition="fade-in fade-out">
-													<p style="position: absolute; top: -300px; left: 350px;">\(\emptyset \rightharpoonup A + B \rightharpoonup 2B \rightharpoonup A\)</p>
-													<div>&nbsp;</div>
-												</section>
-
-												<section data-background="./figures/phd/change_of_coords9c.png" data-background-size="47%" data-transition="fade-in fade-out">
-													<p style="position: absolute; top: -300px; left: 350px;">\(\emptyset \rightharpoonup A + B \rightharpoonup 2B \rightharpoonup A\)</p>
-													<p style="background-color:#F0F1EB; position: absolute; top: -130px; left: 00px;">$$\dot x = \sum_{r \in \mathcal R} k_r e^{\rho \langle w, c_{\rm in}^r\rangle} c^r$$</p>
-													<div>&nbsp;</div>
-												</section>
-
-												<section data-background="./figures/phd/change_of_coords9b.png" data-background-size="47%" data-transition="fade-in fade-out">
-													<p style="position: absolute; top: -300px; left: 350px;">\(\emptyset \rightharpoonup A + B \rightharpoonup 2B \rightharpoonup A\)</p>
-													<p style="background-color:#F0F1EB; position: absolute; top: -130px; left: 00px;">$$\dot x = \sum_{r \in \mathcal R} k_r e^{\rho \langle w, c_{\rm in}^r\rangle} c^r$$</p>
-													<div>&nbsp;</div>
-												</section>
-
-												<section data-background="./figures/phd/change_of_coords4.png" data-background-size="47%" data-transition="fade-in fade-out">
-													<p style="position: absolute; top: -300px; left: 350px;">
-														\(\emptyset \rightharpoonup A + B \rightharpoonup 2B \rightharpoonup A\)
-													</p>
-													<div>&nbsp;</div>
-												</section>
-
-												<section data-background="./figures/phd/change_of_coords5.png" data-background-size="47%" data-transition="fade-in fade-out">
-													<p style="position: absolute; top: -300px; left: 350px;">
-														\(\emptyset \rightharpoonup A + B \rightharpoonup 2B \rightharpoonup A\)
-													</p>
-													<div>&nbsp;</div>
-												</section>
-
-												<section data-background="./figures/phd/change_of_coords6.png" data-background-size="47%" data-transition="fade-in fade-out">
-
-													<div>&nbsp;	</div>
-													<p style="position: absolute; top: 700px; left: 350px;">$[$A., Dembo, Eckmann, 18$]$</p>
-												</section>
 			</section>
 
 
-
-
-
 			<section>
-				<h2 style="margin-bottom:30px;">
-					Chemical Lyapunov function
-				</h2>
+				<h2 style="margin-bottom: 30pt;">Ergodicity: Galerkin Navier Stokes</h2>
+
 				<p align="left">
-					We use the chemical Lyapunov function
-				</p>
+Let $\mathcal H = \{x \in \mathbb R^{n}~:~\exists \tau \in \mathbb R_+^{n},~\mathrm{supp}(\Phi_\tau(x))=\{1,\dots, n\}\}$					</p>
+<p align="left" style="font-size:0.9em;">
+	A <em>weak bracket condtion </em> holds at $x$ if the set of vectors
+	$$	\mathcal{V}_{m+1} = \left\{[V_k,W] : W\in\mathcal{V}_m, 0\leq k\leq n\right\}\cup\mathcal{V}_m.
+$$
+spans the tangent space of the model at $x$ for $m$ large enough.
+</p>
+<div style="border: 2px solid black;padding: 10px 10px 0px 10px;margin-bottom:10px;">
+
+				<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2022):</h3>
 				<p align="left">
-					$$U(x) := \sum_{i=1}^d x_i \log x_i - x_i + 1 \quad \Rightarrow \quad \nabla_i U(e^{\rho w}) = \rho w_i $$
+					For the randomly split Galerkin Navier Stokes  ($\color{red}{V_0},V_1, \dots, V_n$), let the fixed point of $\color{red}{V_0}$ satisfy a weak bracket (or Hörmander) conditon. Then $P_h$ has a unique invariant measure $\mu$ to which the system converges exponentially fast in a weighted total varation norm.
 				</p>
-				<div class="fragment" data-fragment-index="0">
-					<p align="left">
-						Writing \(x_i = e^{\rho w_i}\) with \( (w, \rho) \in S^{d-1}\times \mathbb R_{\ge0}\), we wish
-					</p>
-					<p align="left">
-						$$\frac{{\rm d}}{{\rm d}t} U(x(t)) = \langle \nabla U (x),\frac{{\rm d}}{{\rm d}t} x(t) \rangle = \rho \sum_{r \in \mathcal R} k_r \langle w, c^{r} \rangle e^{\rho \langle w, c_{\rm in}^r\rangle} \overset{!}{
-							<} 0$$
-						</p>
-								<p align="left" class="fragment" data-fragment-index="1">
-									This holds if for \(\rho\) large enough and any \(w \in S^{d-1}\), the reaction dominating the sum (maximizing \(\langle w, c_{\rm in}^r\rangle\)) contributes negatively to it \((\langle w, c^{r}\rangle
-									< 0)\).
-								</p>
-					</div>
-					<!-- <p class="fragment" data-fragment-index="0" style="background-color:#F0F1EB; position: absolute; top: 100px; left: 650px;">$\dot x = \sum_{r \in \mathcal R} k_r e^{\rho \langle w, c_{\rm in}^r\rangle} c^r$</p> -->
-				</section>
-
-				<section>
-					<h2>
-							Strongly endotactic networks
-					</h2>
-					<div style="width: 690px; float:left;">
-						<p align="left">
-							The network \((\mathcal S, \mathcal C, \mathcal R)\) is called <em>strongly endotactic</em> if, for all
-							<font class="fragment highlight-red" data-fragment-index="1">\(w \in S^{1}\)</font>, the set of dominant reactions \(\mathcal R_w = \arg\max_{r \in \mathcal R} { \langle w, c_{\rm in}^r\rangle }\)<br> contains only reactions with \(\langle w , c^{r}\rangle \leq 0~,\)<br>
-							and at least one has \( \langle w , c^{r}\rangle
-							< 0~.\) </p>
-								<p align="left">
-									<font >This can be checked algorithmically.</font>
-								</p>
-					</div>
-					<div class="fragment" data-fragment-index="1" style="width: 440px; float:right;">
-						<img src="./figures/phd/cmp_ex_sprd_9b.png" align="right" vertical-align="bottom" style="border: 0; width:410px; box-shadow: none;" />
-					</div>
-					<p align="left">$[$Gopalkrishnan, Miller, Shiu, '16$]$</p>
-				<!--<p align="left" class="fragment" data-fragment-index="2">This family can be further generalized defining for any $a \in \mathbb R^d, \|a\|_1=d$: $$U_a(x) = 1+ \sum_{i+1}^d a_i x_i (\log(x_i)-1)$$</p>-->
-				</section>
+			</div>
 
 
-				<section>
-					<h2>
-						Averaging in the bulk
-					</h2>
-
-					<div style="float:left; width:650px;">
-
-						<p align="left">
-							It can be shown that weakly reversible networks are strongly endotactic for <em>almost</em> all $w \in S^1$.
-							For some $w \in \mathcal W$ the dominant reactions may have \( \langle w , c^{r}\rangle
-							= 0~.\)
-						</p>
-						<p align="left" class="fragment" data-fragment-index="1">
-							We need to average out these reactions, in order to "see" the contribution of the lower order ones (which plays in our favor).
-						</p>
-					</div>
-					<div style="width: 500px; float:right;" class="fragment" data-fragment-index="2">
-						<img src="./figures/phd/w9.png" vertical-align="top" style="border: 0; width:450px; box-shadow: none; " />
-					</div>
-				</section>
-
-				<section data-background="./figures/phd/change_of_coords6.png" data-background-size="47%" data-transition="fade-in fade-out">
-					<p style="position: absolute; top: -300px; left: 350px;">
-						\(\emptyset \rightharpoonup A + B \rightharpoonup 2B \rightharpoonup A\)
-					</p>
-					<div>&nbsp;</div>
-				</section>
-
-				<section>
-					<h2>
-						Averaging in the bulk
-					</h2>
-
-					<div style="float:left; width:550px;">
-
-						<p align="left">
-							For any problematic $w^* \in S^1$ we locally choose $V(x)$ with  $$c^r \cdot \nabla V(x) = 0$$
-							for $r \in \mathcal R_{w^*}$
-						</p>
-						<p align="left" class="fragment" data-fragment-index="1">
-							We smoothly "patch" this locally defined Lyapunov function with $U(x)$ on the rest of the domain.
-						</p>
-					</div>
-					<div style="width: 600px; float:right;" class="fragment" data-fragment-index="2">
-						<img src="./figures/crc/smoothing4.png" vertical-align="top" style="border: 0; width:550px; box-shadow: none; " />
-					</div>
-				</section>
+			</section>
+		</section>
 
 
 
+								<section>
+									<h2 style="margin-bottom: 30pt;">Ergodicity of gNSE: Sketch of proof</h2>
+					<ul align="left" style="font-size:0.9em;">
+						<li>
+									 In the presence of the forcing term $V_0(q) = - \nu \Lambda q + F$ there exists $r>0$ with $\mathcal B_r(0)$  being forward invariant wrt the split dynamics. This implies tighness and existence follows by Krylov-Bogolubov.
+								 </li>
+														<li align="left" style="margin-top:20px;">
+														Further, a Doeblin minorization condition holds: letting $P_h$ be the semigroup of a cycle, by the weak bracket condition there exists $m>0$ a set $B$ and a constant $c>0$ suc that for any $q_0 \in \mathcal B_r(0)$
 
-				<section>
-					<h2>Transition to boundary behavior</h2>
+														$$
+P_h^{m+1}(q_0, B) > c_h \lambda (\cdot \cap B)										$$
 
-					<p align="left">Consider  $\emptyset \to A+B\,,  \quad 5A + 2 B \to 3B \to 2B\,, \quad   2A + B \to 2A $
-					</p>
-					<p align="left" style="width:1100px">$$\Lambda_{\emptyset \to A+B}(n) \approx k \quad \Lambda_{2A+B\to 2A  }(n) \approx k' n_A^2{n_B}\quad \Lambda_{5A+2B\to 3B  }(n) \approx k'' n_A^5 \binom{n_B}{2}$$</p>
+Uniqueness and exponential convergence follow from the above by a standard coupling argument.												</li>
+</ul>
 
-						<!-- <p align="left">For large values of $x_A$, the dominating reaction is $5A+2B \to 3B$, but this can only happen when $x_B \geq 2$ (as otherwise $\Lambda_{5A+2B\to 3B  }^{(1)} = 0$)</p> -->
-
-						<div style="width:1100px;height:400px;margin:40px 0px 0px 00px;">
-
-						<img class="fragment " data-fragment-index="1" style="border: 0; width:700px; box-shadow: none; position:absolute;top:350px;left:0px;  margin:0px 30px 30px 00px;padding=0px" src="./figures/mf/boundarydown3.png" align="left" >
-						<img class="fragment " data-fragment-index="2" style="border: 0; width:700px; box-shadow: none; position:absolute;top:350px;left:0px; margin:0px 30px 30px 00px;padding=0px" src="./figures/mf/boundaryup3a.png" align="left" >
-
-						<div class="fragment " data-fragment-index="1" style="float:left; width:540px;position:absolute;top:350px;left:720px; ">
-						<table style=" font-size: 0.9em;">
-							<tr>
-								<td align="left">
-						$\bullet$ if $n_B = 0\,$ only $\emptyset \to A+B\,$ fires<br><br>
-						$\bullet$  if $n_B = 1\,$, $\emptyset \to A+B\,$ and $\,\,\,2A+B \to 2A\,$ compete, but $$p_{\emptyset \to A+B}((n_A,0)) = \frac{1}{n_A^2+1}$$
-								</td>
-							</tr>
-						</table>
-						</div >
-						</section>
-
-						<section>
-							<h2>Transition to boundary behavior</h2>
-
-							<p align="left">Consider $\emptyset \to A+B\,,  \quad 5A + 2 B \to 3B \to 2B\,, \quad   2A + B \to 2A $
-							</p>
-							<p align="left" style="width:1100px">$$\Lambda_{\emptyset \to A+B}(n) \approx k \quad \Lambda_{2A+B\to 2A  }(n) \approx k' n_A^2{n_B}\quad \Lambda_{5A+2B\to 3B  }(n) \approx k'' n_A^5 \binom{n_B}{2}$$</p>
-
-								<!-- <p align="left">For large values of $x_A$, the dominating reaction is $5A+2B \to 3B$, but this can only happen when $x_B \geq 2$ (as otherwise $\Lambda_{5A+2B\to 3B  }^{(1)} = 0$)</p> -->
-
-								<div style="width:1100px;height:400px;margin:40px 0px 0px 00px;">
-
-							<img  style="border: 0; width:700px; box-shadow: none; position:absolute;top:350px;left:0px; margin:0px 30px 30px 00px;padding=0px" src="./figures/mf/boundaryup3b.png" align="left" >
-
-								<div style="float:left; width:540px;position:absolute;top:350px;left:720px; ">
-									<table style=" font-size: 0.9em;">
-										<tr >
-											<td align="left" >
-									$\bullet$ if $n_B = 0\,$ only $\emptyset \to A+B\,$ fires<br><br>
-									$\bullet$  if $n_B = 1\,$, $\emptyset \to A+B\,$ and $\,\,\,2A+B \to 2A\,$ compete, but $$p_{\emptyset \to A+B}((n_A,0)) = \frac{1}{n_A^2+1}$$
-											</td>
-										</tr>
-									</table>
-								</div >
 								</section>
 
 
-						<section>
-							<h2>Boundary behavior: an example</h2>
-
-
-												<div style="float:left; width:550px;">
-
-													<p align="left">
-														While the above, divergent behavior does not occur in weakly reversible networks, also in this case we observe boundary layer effects.
-													</p>
-													<p align="left" class="fragment" data-fragment-index="1">
-														Consider the <em>musterbeispiel</em> $\emptyset \to A+B \to 3A+2B \to \emptyset$
-													</p>
-												</div>
-												<div style="width: 600px; float:right;" class="fragment" data-fragment-index="2">
-													<img src="./figures/phd/w5.png" vertical-align="top" style="border: 0; width:550px; box-shadow: none; " />
-												</div>
-						</section>
-
-						<section data-background-color="black">
-							<p align="left">Consider $\emptyset \to A+B \to 3A+2B \to \emptyset $
-							</p>
-							<p align="left" style="width:1100px">$$\Lambda_{\emptyset \to A+B}(n) \approx k \quad \Lambda_{A+B\to 3A+2B  }(n) \approx k' n_A{n_B}\quad \Lambda_{3A+2B\to \emptyset  }(n) \approx k'' n_A^3 \binom{n_B}{2}$$</p>
-<p>$\,\\\,\\\,\\\,\\\,\\\,\\\,\\\,\\\,$</p>
-</section>
-
-						<section>
-							<h2>Intuition: WF fast-slow decomposition</h2>
-							<p align="left">
-For large $n_A$ we decompose the dynamical landscape on the boundary into potential <em>wells</em> or <em>fibers</em>.</p>
-							<div style="float:left; width:490px;">
-
-								<img src="./figures/phd/w5.png" vertical-align="top" style="border: 0; width:470px; box-shadow: none; " />$\qquad \qquad$
-
-							</div>
-							<div style="width: 550px; float:right;" class="fragment" data-fragment-index="2">
-								<img src="./figures/crc/WF22.png" vertical-align="top" style="border: 0; width:530px; box-shadow: none; " />
-							</div>
-						</section>
-
-						<section>
-							<h2>Intuition: WF fast-slow decomposition</h2>
-							<p align="left">
-For large $n_A$ we decompose the dynamical landscape on the boundary into potential <em>wells</em> or <em>fibers</em>.</p>
-							<div style="float:left; width:490px;">
-
-								<img src="./figures/phd/wr11.png" vertical-align="top" style="border: 0; width:430px; box-shadow: none; " />$\qquad \qquad$
-
-							</div>
-							<div style="width: 550px; float:right;" class="fragment" data-fragment-index="2">
-								<img src="./figures/crc/WF33.png" vertical-align="top" style="border: 0; width:570px; box-shadow: none; " />
-							</div>
-
-
-						</section>
-
-
-						<section>
-							<h2>Adapting the proof</h2>
-							<!-- <p align="left">
-		To capture dissipation in the framework introduced above, we partition the bulk into a hierarchy of <em>fibers</em>.
-		</p> -->
-		<p align="left"> We sequentially coarse-grain the fibers and define our Lyapunov function as <em>constant</em> on such coarse-grained sets, relaxing our dissipation condition to
-		$$\mathbb E_{n} \int_{0}^{\tau_i}  \mathcal L V(N_s) ds \le -C\cdot \mathbb E_{n}[ \tau_i]\qquad \text{for } N_t \not \in \mathcal K$$
-	</p>
+				<section>
+					<h2 style="margin-bottom: 30pt;">Lyapunov exponents</h2>
 	<p align="left">
-where $N_0 = n$ and $\tau_i$ is the time to exit fiber $i$.</p>
+					 Let $P_t$ have a unique inv. meas. $\mu$, then (by the multiplicative ergodic theorem) there exists a deterministic $\lambda_1$ such that $\mathbb P\times \mu$-a.e. in $(\omega, x)$,
 
-<p align="left" class="fragment"> Choosing $V((n_A,0)) = e^{n_A}$ we have for $c_1,c_2 > 0$
-	$$\mathbb E_{n} \int_{0}^{\tau_i}  \mathcal L V(N_s) ds =   \mathbb E_{n}V(n_{\tau_i}) - V(n) \leq - e^{n_A} (c_1 \mathbb P_n(-) - c_2 \mathbb P_n(+)) $$
-	so we are done if, for any $n_B$, $\mathbb P_n(-)/\mathbb P_n(+) \to \infty$ as $n_A \to \infty$.
+										$$
+										 \lambda_1 := \lim_{t \to \infty} \frac 1 t \log |D \Phi_t(x)|
+									$$
+
+This describes asymptotic rate of separation of trajectores, and $\lambda_1>0$ hints for chaos</p>
+
+
+
+										<div class="fragment" style="border: 2px solid black;padding: 10px 10px 0px 10px;margin-bottom:10px;">
+
+															<h4 align="left" style="font-size: 1.1em;">Theorem (A., Mattingly, Melikechi, 2022+):</h3>
+															<p align="left">
+																Let $\Phi_\tau$ be the random flow map for the conservative Lorenz 96 or the Galerkin Euler dynamics. The Lyapunov exponent of $\Phi_\tau$ is strictly positive: $\lambda_1>0$.</p>
+							</div>
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Proof sketch: part 1</h2>
+	<p align="left">
+					 The proof hinges on the following result:
 </p>
+					 <div  style="border: 2px solid black;padding: 10px 10px 0px 10px;margin-bottom:10px;">
+
+										 <h4 align="left" style="font-size: 1.1em;">Theorem (Baxendale, 1983):</h3>
+										 <p align="left">
+											 If sufficiently regular, conservative flow $\Phi_\tau$ ($\sum_{i} \lambda_i = 0$) has a positive Lyapunov exponent, then either<br>
+											 $\bullet$ There exists a metric $g_x$ on $\mathcal M$ such that $\Phi$ is conformal wrt $g_x$<br>
+											 $\bullet$ For every $x \in \mathcal M$ and $\tau$ there exists a nontrivial family of subspaces $T \in T_{x}\mathcal M$ that are left invariant by $\Phi_\tau$
+										   </p>
+		 </div>
+
+				</section>
+
+				<section>
+					<h2 style="margin-bottom: 30pt;">Proof sketch: part 2</h2>
+	<p align="left">
+					 We disprove that (a) and (b) hold in our setting:</p>
+
+					 <p align="left">
+										$\bullet$ The periodicity of the orbits of $\Phi_t(q)$ and the shearing result in
+									$$D\Phi_{t_n}(q) = I + n A$$
+								and the stretching of a tangent vector contradicts the existence of a metric wrt which $\Phi$ is conformal </p>
+								<p align="left">
+		 										$\bullet$ The weak bracket condition in $TT\mathcal M$ guarantees that the maps connecting $q$ to $q'$ has a density in $T_{q'}\mathcal M$, so the map does not preserve subspaces of the tangent bundle. </p>
+				</section>
 
 
+				<section>
+					<h2 style="margin-bottom: 30pt;">Nonlinear Schrodinger equation?</h2>
+	<p align="left">
+					 A similar approach can be applied to the NLS:</p>
+
+					 <p align="left">
+										$\bullet$ The periodicity of the orbits of $\Phi_t(q)$ and the shearing result in
+									$$D\Phi_{t_n}(q) = I + n A$$
+								and the stretching of a tangent vector contradicts the existence of a metric wrt which $\Phi$ is conformal </p>
+								<p align="left">
+		 										$\bullet$ The weak bracket condition in $TT\mathcal M$ guarantees that the maps connecting $q$ to $q'$ has a density in $T_{q'}\mathcal M$, so the map does not preserve subspaces of the tangent bundle. </p>
+				</section>
+
+
+
+
+
+
+
+																<section data-transition="fade-in slide-out">
+																	<h2 style="position: relative">Thank you Gian Michele!</h2>
+
+																				<div style="width: 1070px;" >
+																					<video data-autoplay src="./figures/fluids/vortexPairLong_LogLogEModes.mp4"></video>
+																				</div>
+	<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+																			</section>
+
+																			<!-- <section data-transition="fade-in slide-out">
+																				<p style="position: relative;">Simulation</p>
+
+																							<div style="width: 1070px;" >
+																								<video data-autoplay src="./figures/fluids/gaussians_LogLogEModes.mp4"></video>
+																							</div>
+	<p style="position: absolute;  left: 80px; font-size: 0.6em;">Enstrophy: $\mathcal E_0 (q) = \|q\|_2^2 = \sum_{j=1}^{(2N+1)^2-1} |q_j|^2 \qquad $ Energy: $\mathcal E_1 (q) = \|q\|_{-1}^2= \sum_{j=1}^{(2N+1)^2-1} \frac{|q_j|^2}{|j|^2}$</p>
+																						</section> -->
+<!--
+		<section data-background="./figures/pca/b038w092.png" data-background-size="47%" data-transition="fade-in fade-out">
+							<p style="position: absolute; top: -300px; left: 350px;">Discrete dynamics ($\beta < \tau^2/2$)</p>
+							<div>&nbsp;</div>
 						</section>
+ -->
 
 
-						<section>
-							<h2>Final step: contradiction</h2>
-<p align="left">
-To prove the desired estimate, choosing $V((n_A,0)) \sim \mathcal O(e^{n_A})$ it is sufficient to show that the process has probability $1$, to leading order, to exit a fiber to the left.
-</p>
-<p align="left">
-Further we note that  the choice of $\{k_r\}$ does not affect the leading order exit probabilities $\mathbb P_n(-),\mathbb P_n(+) $ from fibers.
-	</p>
-<div class="fragment" style="border: 2px solid black;padding: 10px 10px 0px 10px;">
-	<p align="left"><b>Theorem (Anderson, Craciun, Kurtz, 2010):</b>
-		Let $(\mathcal S, \mathcal C, \mathcal R)$ be a weakly reversible chemical reaction network, there exist reaction rates $\{k_r\}$ such that the invariant distribution of $N_t$ is Poisson.
-	</p>
-</div>
-<div class="fragment">
-<p align="left"> The superexponential decay of Poisson tails is in contradiction with a comparably likely exit probability from fibers. </p>
-	</div>
-						</section>
+<!--
+				<section >
+									<h2 style="position: relative">Thank you!</h2>
+									<div>&nbsp;</div>
+								</section> -->
 
 
-
-
-
-
-
-
-
-
-
-
-<section>
-
-
-	<h2 style="padding:0;margin:60pt 60px 60pt 10pt;">Thank you</h2><br><br>
-	<h2 class="fragment" style="padding:0;margin:60pt 60px 60pt 10pt;">Merci Jean-Pierre!</h2>
-
-
-</section>
-
-
-
-	<!-- <section data-background="./figures/phd/nice.gif" data-background-color="#000000" data-background-size="contain" data-transition="slide-in fade-out">
-		<h2 style="position: absolute; top: -320px; left: 180px;">
-			Thank you
-		</h2>
-		<div>&nbsp;</div>
-	</section> -->
-
-
+			</div>
 		</div>
-	</div>
+			</div>
 		</div>
-	</div>
 
-	<script src="dist/reveal.js"></script>
-	<script src="plugin/notes/notes.js"></script>
-	<script src="plugin/markdown/markdown.js"></script>
-	<script src="plugin/highlight/highlight.js"></script>
-<script src="plugin/chalkboard/plugin.js"></script>
-<script src="plugin/math/math.js"></script>
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+	<script src="plugin/math/math.js"></script>
 
-	<script>
-		// More info about initialization & config:
-		// - https://revealjs.com/initialization/
-		// - https://revealjs.com/config/
-		Reveal.initialize({
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
 
-			width: 1200,
-			height: 700,
+				width: 1060,
+				height: 700,
 
-			viewDistance: 70,
+				history: true,
+				// transition: 'none',
+				backgroundTransition: 'none',
+				// Enables touch navigation on devices with touch input
+  		  touch: true,
+				//
+				// // Hide cursor if inactive
+  		  // hideInactiveCursor: true,
+				//
+  		  // // Time before the cursor is hidden (in ms)
+        // hideCursorTime: 5000
 
-			history: true,
-			 transition: 'none',
-			backgroundTransition: 'none',
-			// Enables touch navigation on devices with touch input
-			touch: true,
-			//
-			// // Hide cursor if inactive
-			// hideInactiveCursor: true,
-			//
-			// // Time before the cursor is hidden (in ms)
-			// hideCursorTime: 5000
+				hash: true,
+				dependencies: [
+						// ...
+						{ src: 'plugin/handwriting/handwriting.js' },
 
-			hash: true,
-			dependencies: [
-					// ...
-					{ src: 'plugin/handwriting/handwriting.js' },
-
-					// ...
+						// ...
 
 
-											{
-													src: 'plugin/mouse-pointer/mouse-pointer.js',
-													async: false
-												},
-				],
+												{
+														src: 'plugin/mouse-pointer/mouse-pointer.js',
+														async: false
+													},
+					],
 
 
-								math: {
-									// mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
-									config: 'TeX-AMS_HTML-full',
-								},
+									math: {
+										// mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+										config: 'TeX-AMS_HTML-full',
+									},
 
-			// Learn about plugins: https://revealjs.com/plugins/
-			plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealChalkboard ,RevealMath]
-		});
-	</script>
-</body>
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealChalkboard ,RevealMath]
+			});
+		</script>
+	</body>
 </html>
